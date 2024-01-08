@@ -7,3 +7,23 @@ html, body, #__next {
   height: 100%;
   width: 100%;
 }
+
+#__next {
+  display: grid;
+  grid-template-areas:
+    "header-menu"
+    "main"
+    "footer";
+
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto auto;
+}
+.gridHeader{
+  grid-area: header-menu;
+}
+.gridMain{
+  grid-area: main;
+}
+.gridFooter{
+  grid-area: footer;
+}
