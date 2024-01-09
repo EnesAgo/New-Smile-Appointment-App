@@ -31,7 +31,8 @@ const config: Config = {
         'first-blue': '#274C5B',
         'first-blue-hover': '#4688a3',
         'sec-blue': "#1890FF",
-        'sec-blue-hover': "#015fb7"
+        'sec-blue-hover': "#015fb7",
+        'dark-blue-hover': "#004CB0"
 
       },
     },
