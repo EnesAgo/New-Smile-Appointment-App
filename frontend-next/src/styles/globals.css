@@ -12,18 +12,14 @@ html, body, #__next {
   display: grid;
   grid-template-areas:
     "header-menu"
-    "main"
-    "footer";
+    "main";
 
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto auto;
+  grid-template-rows: auto 1fr;
 }
 .gridHeader{
   grid-area: header-menu;
 }
 .gridMain{
   grid-area: main;
-}
-.gridFooter{
-  grid-area: footer;
 }
