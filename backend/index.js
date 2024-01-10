@@ -53,14 +53,14 @@ app.use(express.json({limit: '1000mb'}));
     app.post("/createWorker", async (req, res) => {
 
         const data = {
-            username: req.data.username,
-            name: req.data.name,
-            surname: req.data.surname,
-            email: req.data.email,
+            username: req.body.username,
+            name: req.body.name,
+            surname: req.body.surname,
+            email: req.body.email,
 
-            password: req.data.password,
+            password: req.body.password,
 
-            userEventColor: req.data.userEventColor,
+            userEventColor: req.body.userEventColor,
         }
 
         const User = await createWorker(data)
@@ -98,8 +98,8 @@ app.use(express.json({limit: '1000mb'}));
 
         res.json(User)
     })
-    app.put("/changeWorkerPassword", verify, async (req, res) => {
-        const uuID = req.body.userUUID;
+    app.put("/changeWorkerPassword",  async (req, res) => {
+        const uuID = req.query.userUUID;
         const oldPass = req.body.oldPass;
         const newPass = req.body.newPass;
 

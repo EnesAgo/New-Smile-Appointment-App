@@ -218,9 +218,10 @@ async function ChangeWorkerPassword(uuID, oldPass, newPass){
             return {error: "Incorrect Password"};
         }
 
-
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(newPass, salt)
+
+
 
         const updated = await Worker.findOneAndUpdate(
             {uuID: uuID},

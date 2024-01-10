@@ -10,8 +10,8 @@ export default function Home() {
 
   return (
       <>
-          <HeaderComp />
-          <main className="flex gridMain flex items-center justify-center">
+          {/*<HeaderComp />*/}
+          <main className="flex gridMain items-center justify-center">
             <LoginForm submitForm={submitLoginForm} />
           </main>
       </>
