@@ -14,13 +14,15 @@ const config: Config = {
       fontFamily: {
         // ...fontFamily,
         'sans': ['Arial', 'Helvetica', 'sans-serif'],
-        'roboto': ['roboto']
+        'roboto': ['roboto'],
+        'Poppints': ['poppins']
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
             'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'background-img-one': 'url("/assets/imgs/background-1.png")'
+        'background-img-one': 'url("/assets/imgs/background-1.png")',
+        'background-img-two': 'url("/assets/imgs/background-2.png")',
       },
       colors: {
         dark: '#15151B',

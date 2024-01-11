@@ -23,3 +23,13 @@ html, body, #__next {
 .gridMain{
   grid-area: main;
 }
+
+
+/*select*/
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #f3f3f3 url("../../public/assets/imgs/icons/down-arrow-select.jpeg") no-repeat 110% 50%;
+  background-size: 60px;
+}
