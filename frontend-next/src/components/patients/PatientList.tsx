@@ -1,9 +1,13 @@
 import React, {useState} from 'react'
+import { useRouter } from 'next/router'
+
 import InpLg from "@/components/Inputs/LogInp";
 import SelectInp from "@/components/Inputs/SelectInp";
 import humanReadableNumber from "@/functions/humanReadableNumber";
 
 export default function PatientList({data, head, searchInpRef, totalPatients}: any) {
+    const router = useRouter()
+
     const iconPrefix = '/assets/imgs/icons'
     const limit = 15;
 
@@ -48,7 +52,7 @@ export default function PatientList({data, head, searchInpRef, totalPatients}: a
                                 <tbody className="divide-y divide-gray-200">
                                 {data && data.map((e:any) =>
 
-                                    <tr key={Math.random()*1000}>
+                                    <tr key={Math.random()*1000} className="cursor-pointer" onClick={() => router.push(`/patients/${e.id}`)}>
                                         {head && head.map((tdInd: any) => (
                                             tdInd === 'status' ?
 

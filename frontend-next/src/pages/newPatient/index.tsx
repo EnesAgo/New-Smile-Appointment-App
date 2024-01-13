@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import HeaderComp from "@/components/Header";
+import NewPatientForm from "@/components/newPatient/NewPatientForm";
 
 export default function NewPatient() {
     useEffect(() => {
@@ -15,8 +16,8 @@ export default function NewPatient() {
     return (
         <>
             <HeaderComp />
-            <main className="flex gridMain">
-
+            <main className="flex gridMain items-center justify-center py-12">
+                <NewPatientForm />
             </main>
         </>
     )
