@@ -1,15 +1,7 @@
 import React from 'react'
+import {InpLgPropsInterface} from "@/@types/interfaces";
 
-interface  InpLgProps{
-    placeholderVal:string,
-    inpType: string,
-    inpRef: any,
-    hasPic: boolean,
-    imgSrc?:string,
-    imgAlt?: string,
-    className?: String
-}
-export default function InpLg(Props: InpLgProps) {
+export default function InpLg(Props: InpLgPropsInterface) {
     const {placeholderVal, inpType, inpRef, hasPic, imgSrc, imgAlt, className} = Props
     return (
         <label className="relative flex">
