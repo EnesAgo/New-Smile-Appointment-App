@@ -15,9 +15,10 @@ const EventSchema = new mongoose.Schema({
     end: String,
     description: String,
     from: String,
+    patient: String,
+    bill: String,
     color: String,
     uuID: String,
-
 })
 
 const WorkerSchema = new mongoose.Schema({
