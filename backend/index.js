@@ -18,6 +18,16 @@ const {
 } = WorkerFunctions;
 
 
+//Event Func imports
+const EventFunctions = require("./dbController/EventShemaController")
+const {
+    createEvent: createEvent,
+    findAllEventsFromThisMonth: findAllEventsFromThisMonth,
+    findAllEvents: findAllEvents,
+    updateEvent: updateEvent,
+    deleteEvent: deleteEvent,
+} = EventFunctions;
+
 
 
 
@@ -50,6 +60,7 @@ app.use(express.json({limit: '1000mb'}));
     })
 
 
+    //workers
     app.post("/createWorker", async (req, res) => {
 
         const data = {
@@ -115,6 +126,76 @@ app.use(express.json({limit: '1000mb'}));
 
         return user
     })
+
+
+    //events
+
+    //create event
+    app.post("/createEvent", verify, async (req, res) => {
+        const newEventUUID = uuidv4()
+        const data = {
+            title: req.body.title,
+            start: req.body.start,
+            end: req.body.end,
+            description: req.body.description,
+            from: req.body.from,
+            color: req.body.color || "#255984",
+            patient: req.body.patient,
+            bill: req.body.bill,
+            uuID: newEventUUID,
+        }
+
+        const event = await createEvent(data)
+        res.json(event)
+    })
+
+    //get events from this month
+    app.get("/findAllEventsFromThisMonth", verify, async (req,res) => {
+        const data = await findAllEventsFromThisMonth()
+        res.json(data)
+    })
+
+    //get events
+    app.get("/findAllEvents", verify, async (req,res) => {
+        let page;
+
+        if(req.query.page){
+            page = parseInt(req.query.page);
+        }
+        else{
+            page = 1;
+        }
+        const data = await findAllEvents(page)
+        res.json(data)
+    })
+
+    //update event
+    app.put("/updateEvent", verify, async (req, res) => {
+
+        const data = {
+            title: req.body.title,
+            start: req.body.start,
+            end: req.body.end,
+            description: req.body.description,
+            from: req.body.from,
+            color: req.body.color || "#255984",
+            patient: req.body.patient,
+            bill: req.body.bill,
+        }
+
+        const event = await updateEvent(data)
+        res.json(event)
+    })
+
+    //delete event
+    app.delete("/deleteEvent/:uuID", verify, async (req, res) => {
+        const deleteduuID = req.params.uuID;
+        const data = await deleteEvent(deleteduuID);
+        res.send(data)
+    })
+
+
+
 
 
 

@@ -124,7 +124,7 @@ async function loginWorker(data){
 
             userEventColor: user.userEventColor,
 
-            token: user.token
+            token: token
         }
 
         return dataUser;
