@@ -81,8 +81,8 @@ async function createWorker(data){
             surname: user.surname,
             email: user.email,
             
-            uuID: data.uuID,
-            isAdmin: data.isAdmin,
+            uuID: user.uuID,
+            isAdmin: user.isAdmin,
             
             userEventColor: user.userEventColor,
 
@@ -119,8 +119,8 @@ async function loginWorker(data){
             surname: user.surname,
             email: user.email,
 
-            uuID: data.uuID,
-            isAdmin: data.isAdmin,
+            uuID: user.uuID,
+            isAdmin: user.isAdmin,
 
             userEventColor: user.userEventColor,
 
@@ -186,8 +186,8 @@ async function getOneWorker(uuID){
             surname: user.surname,
             email: user.email,
 
-            uuID: data.uuID,
-            isAdmin: data.isAdmin,
+            uuID: user.uuID,
+            isAdmin: user.isAdmin,
 
             userEventColor: user.userEventColor,
 

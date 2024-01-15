@@ -24,6 +24,8 @@ const {
     createEvent: createEvent,
     findAllEventsFromThisMonth: findAllEventsFromThisMonth,
     findAllEvents: findAllEvents,
+    findAllPatientEvents: findAllPatientEvents,
+    findAllWorkerEvents: findAllWorkerEvents,
     updateEvent: updateEvent,
     deleteEvent: deleteEvent,
 } = EventFunctions;
@@ -128,34 +130,32 @@ app.use(express.json({limit: '1000mb'}));
     })
 
 
+
+
+
+
+
     //events
 
     //create event
     app.post("/createEvent", verify, async (req, res) => {
-        const newEventUUID = uuidv4()
         const data = {
             title: req.body.title,
-            start: req.body.start,
-            end: req.body.end,
+            start: new Date(req.body.start),
+            end: new Date(req.body.end),
             description: req.body.description,
             from: req.body.from,
             color: req.body.color || "#255984",
             patient: req.body.patient,
             bill: req.body.bill,
-            uuID: newEventUUID,
+            billType: req.body.billType || "mkd",
         }
 
         const event = await createEvent(data)
         res.json(event)
     })
 
-    //get events from this month
-    app.get("/findAllEventsFromThisMonth", verify, async (req,res) => {
-        const data = await findAllEventsFromThisMonth()
-        res.json(data)
-    })
-
-    //get events
+    //get all events
     app.get("/findAllEvents", verify, async (req,res) => {
         let page;
 
@@ -166,6 +166,40 @@ app.use(express.json({limit: '1000mb'}));
             page = 1;
         }
         const data = await findAllEvents(page)
+        res.json(data)
+    })
+
+    //get all patient
+    app.get("/findAllPatientEvents", verify, async (req,res) => {
+        let page;
+
+        if(req.query.page){
+            page = parseInt(req.query.page);
+        }
+        else{
+            page = 1;
+        }
+        const data = await findAllPatientEvents(page)
+        res.json(data)
+    })
+
+    //get all patient
+    app.get("/findAllWorkerEvents", verify, async (req,res) => {
+        let page;
+
+        if(req.query.page){
+            page = parseInt(req.query.page);
+        }
+        else{
+            page = 1;
+        }
+        const data = await findAllWorkerEvents(page)
+        res.json(data)
+    })
+
+    //get events from this month
+    app.get("/findAllEventsFromThisMonth", verify, async (req,res) => {
+        const data = await findAllEventsFromThisMonth()
         res.json(data)
     })
 
@@ -181,9 +215,12 @@ app.use(express.json({limit: '1000mb'}));
             color: req.body.color || "#255984",
             patient: req.body.patient,
             bill: req.body.bill,
+            billType: req.body.billType,
         }
 
-        const event = await updateEvent(data)
+        const uuID = req.query.uuID
+
+        const event = await updateEvent(data, uuID)
         res.json(event)
     })
 

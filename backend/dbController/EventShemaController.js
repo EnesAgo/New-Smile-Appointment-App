@@ -47,11 +47,17 @@ function checkEventOverlap(allEvents, data){
 async function createEvent(data){
     try{
 
-        const startDate = moment(new Date(data.start)).subtract(14, 'days').startOf("day")
-        const endDate = moment(new Date(data.end)).add(14, 'days').endOf('day')
+        const uuIDString = uuidv4();
+
+        const startDate = moment(data.start).subtract(14, 'days').startOf("day").format('YYYY-MM-DD[T00:00:00.000Z]')
+        const endDate = moment(data.end).add(14, 'days').endOf('day').format('YYYY-MM-DD[T00:00:00.000Z]')
+
+        // const startDate = moment(data.start).subtract(2, "w").format()
+        // const endDate = moment(data.end).add(2, "w").format()
+
 
         const AllEvents = await EventSchema.find({
-        start: { $gte: startDate, $lte: endDate }
+        start: { "$gte": data.start, "$lte": data.end }
         });
 
         const isOverlapping = checkEventOverlap(AllEvents, data)
@@ -60,7 +66,15 @@ async function createEvent(data){
             return isOverlapping
         }
 
-        const event = await EventSchema.create(data)
+        const postData = {
+            ...data,
+            uuID: uuIDString
+        }
+
+        console.log(postData)
+
+
+        const event = await EventSchema.create(postData)
 
         return event
     }
@@ -72,14 +86,18 @@ async function createEvent(data){
 async function findAllEventsFromThisMonth(){
     try{
 
-        const startDate = moment(new Date()).subtract(14, 'days').startOf("day")
-        const endDate = moment(new Date()).add(14, 'days').endOf('day')
+        const startDate = moment(new Date()).subtract(14, 'days')
+        const endDate = moment(new Date()).add(14, 'days')
 
         const AllEvents = await EventSchema.find({
             start: { $gte: startDate, $lte: endDate }
         });
 
-        return AllEvents
+        const total = await EventSchema.countDocuments({
+            start: { $gte: startDate, $lte: endDate }
+        });
+
+        return { total, AllEvents }
     }
     catch (e){
         return {error: e}
@@ -102,10 +120,42 @@ async function findAllEvents(page){
     }
 }
 
-async function updateEvent(data) {
+async function findAllPatientEvents(patient, page){
+    try{
+        const limit = 15;
+        const offset = (page - 1) * limit;
 
-    const startDate = moment(new Date(data.start)).subtract(14, 'days').startOf("day")
-    const endDate = moment(new Date(data.end)).add(14, 'days').endOf('day')
+        const total = await EventSchema.countDocuments({patient: patient});
+
+        const AllEvents = await EventSchema.find({patient: patient}).skip(offset).limit(limit);
+
+        return { total, AllEvents, page }
+    }
+    catch (e){
+        return {error: e}
+    }
+}
+
+async function findAllWorkerEvents(worker, page){
+    try{
+        const limit = 15;
+        const offset = (page - 1) * limit;
+
+        const total = await EventSchema.countDocuments({from: worker});
+
+        const AllEvents = await EventSchema.find({from: worker}).skip(offset).limit(limit);
+
+        return { total, AllEvents, page }
+    }
+    catch (e){
+        return {error: e}
+    }
+}
+
+async function updateEvent(data, uuID) {
+
+    const startDate = moment(new Date(data.start)).subtract(14, 'days')
+    const endDate = moment(new Date(data.end)).add(14, 'days')
 
     const AllEvents = await EventSchema.find({
         start: { $gte: startDate, $lte: endDate }
@@ -117,7 +167,7 @@ async function updateEvent(data) {
         return isOverlapping
     }
 
-    const updated = await EventList.findOneAndUpdate({uuID: data.uuID}, data)
+    const updated = await EventSchema.findOneAndUpdate({uuID: uuID}, data)
 
     return updated;
 }
@@ -125,7 +175,7 @@ async function updateEvent(data) {
 async function deleteEvent(deleteduuID) {
     try{
 
-        const deleted = await EventList.deleteOne({
+        const deleted = await EventSchema.deleteOne({
                 uuID: deleteduuID
             })
 
@@ -145,6 +195,8 @@ module.exports = {
     createEvent: createEvent,
     findAllEventsFromThisMonth: findAllEventsFromThisMonth,
     findAllEvents: findAllEvents,
+    findAllPatientEvents: findAllPatientEvents,
+    findAllWorkerEvents: findAllWorkerEvents,
     updateEvent: updateEvent,
     deleteEvent: deleteEvent,
 };

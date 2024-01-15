@@ -10,6 +10,13 @@ export default function HeaderComp() {
         const NavHovRoute = router.route.split("/")[1]
         setNavHover(NavHovRoute);
     }, [])
+
+
+    function logOut() {
+        localStorage.setItem('jwtNewSmile', '');
+        return router.replace('/')
+    }
+
     return (
             <header className="w-full flex justify-between items-center min-h-16 px-10 bg-[rgba(255,255,255,0.5)] gridHeader">
                 <Link href="/">
@@ -27,7 +34,7 @@ export default function HeaderComp() {
                             <Link href="/newPatient" rel="New-Patient" className={`hover:text-first-blue-hover ${NavHover==="newPatient" && "font-bold text-sec-blue"}`}>New Patient</Link>
                         </li>
                         <li>
-                            <span className="hover:text-first-blue-hover cursor-pointer">Log out</span>
+                            <span className="hover:text-first-blue-hover cursor-pointer" onClick={() => logOut()}>Log out</span>
                         </li>
                     </ul>
                 </nav>
