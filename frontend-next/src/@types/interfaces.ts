@@ -1,4 +1,4 @@
-export interface InpLgPropsInterface{
+export interface IInpLgPropsInterface{
     placeholderVal: string,
     inpType: string,
     inpRef: any,
@@ -8,7 +8,7 @@ export interface InpLgPropsInterface{
     className?: string
 }
 
-export interface PatientEditDataInterface{
+export interface IPatientEditDataInterface{
     patientData: {
         name: string,
         surname: string,
@@ -18,12 +18,15 @@ export interface PatientEditDataInterface{
         tel: string,
         birthDate: string,
         birthPlace: string,
+        debt: number,
+        debtCurrencyType: string,
+        status: boolean,
         EMBG: string,
         img: string
     }
 }
 
-export interface PatientEventInterface {
+export interface IPatientEventInterface {
     patientHistoryData: {
         title: string,
         start: string,

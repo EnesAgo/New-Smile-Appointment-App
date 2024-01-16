@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react'
 import LoginForm from "@/components/Login";
-import { ToastContainer, toast } from 'react-toastify';
 import HttpRequest from "@/requests/HttpRequest";
 import {useRouter} from "next/router";
+import {alertError} from "@/functions/alertFunctions";
+import ToastContainerDefault from "@/components/toastContainer/ToastContainers";
 
 export default function Home() {
 
@@ -21,17 +22,6 @@ export default function Home() {
         document.body.classList.add("bg-background-img-one");
     }, [])
 
-    const alertError = (msg: any) => toast.error(msg,
-        {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            // theme: "colored",
-        });
 
     async function submitLoginForm(usernameRef:any, passwordRef:any){
         const usernameVal = usernameRef.current.value
@@ -72,18 +62,7 @@ export default function Home() {
 
   return (
       <main className="flex gridMain items-center justify-center">
-          <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              // theme="colored"
-          />
+          <ToastContainerDefault />
           <LoginForm submitForm={submitLoginForm} />
       </main>
   )

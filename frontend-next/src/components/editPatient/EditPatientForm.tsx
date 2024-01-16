@@ -1,12 +1,25 @@
 import React, {useEffect, useRef, useState} from 'react'
 import InpLg from "@/components/Inputs/LogInp";
-import {PatientEditDataInterface} from "@/@types/interfaces";
+import {IPatientEditDataInterface} from "@/@types/interfaces";
+import LogButton from "@/components/Inputs/LogButton";
 
-export default function EditPatientForm(Props: PatientEditDataInterface) {
+export default function EditPatientForm(Props: IPatientEditDataInterface) {
 
     const patientData = Props.patientData
 
+    const statusButtonColors = {
+        activeBG: "#0C9201",
+        activeBGHover: "#096d00",
+        activeBorder: "#036104",
+
+        inActiveBG: "#ffC5c5",
+        inActiveBGHover: "#ff9393",
+        inActiveBorder: "#df0404",
+    }
+
     const [patientImg, setPatientImg] = useState('')
+
+    const [patientStatus, setPatientStatus] = useState(false)
 
     const nameRef = useRef<any>()
     const surnameRef = useRef<any>()
@@ -16,6 +29,8 @@ export default function EditPatientForm(Props: PatientEditDataInterface) {
     const addresRef = useRef<any>()
     const birthDateRef = useRef<any>()
     const birthPlaceRef = useRef<any>()
+    const debtRef = useRef<any>()
+    const debtCurrencyTypeRef = useRef<any>()
     const embgRef = useRef<any>()
     const fileImgRef = useRef<any>()
 
@@ -28,10 +43,16 @@ export default function EditPatientForm(Props: PatientEditDataInterface) {
         addresRef.current.value = patientData.addres
         birthDateRef.current.value = patientData.birthDate
         birthPlaceRef.current.value = patientData.birthPlace
+        debtRef.current.value = patientData.debt
+        debtCurrencyTypeRef.current.value = patientData.debtCurrencyType
         embgRef.current.value = patientData.EMBG
 
+        setPatientStatus(patientData.status)
+
         setPatientImg(patientData.img)
-    })
+    }, [])
+
+
 
     return (
         <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
@@ -91,13 +112,50 @@ export default function EditPatientForm(Props: PatientEditDataInterface) {
                     </label>
                 </section>
 
+                <section className="flex w-[90%] items-center justify-center gap-24">
+                    <label>
+                        <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                         font-Poppints">Debt</p>
+                        <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Debt"} inpType={"number"} inpRef={debtRef} hasPic={false} />
+                    </label>
+                    <label>
+                        <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                         font-Poppints">Currency</p>
+                        <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Currency"} inpType={"text"} inpRef={debtCurrencyTypeRef} hasPic={false} />
+                    </label>
+                </section>
+
                 <section className="flex w-[60%] items-center justify-center gap-24">
                     <label>
                         <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
                          font-Poppints">EMBG</p>
                         <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"EMBG"} inpType={"text"} inpRef={embgRef} hasPic={false} />
                     </label>
-                    <label>
+
+                    <div>
+                        <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                         font-Poppints">Status</p>
+                        {
+                            patientStatus ?
+                                <button
+                                    className={`flex items-center justify-center !w-72 !h-12 rounded-xl bg-[#0C9201] hover:bg-[#096d00] border-2 border-[#036104] text-white text-xl`}
+                                    onClick={() => setPatientStatus(false)}
+                                >Active</button> :
+
+                                <button
+                                    // className={`flex items-center justify-center !w-72 !h-12 !pl-3 rounded-xl bg-[#ff3f3f] hover:bg-[#fc0505] border-2 border-[#df0404] text-white text-xl`}
+
+                                    className={`flex items-center justify-center !w-72 !h-12 rounded-xl bg-[#fc6767] hover:bg-[#ff3a3a] border-2 border-[#DF0404] text-white text-xl`}
+
+                                    onClick={() => setPatientStatus(true)}
+                                >InActive</button>
+                        }
+                    </div>
+
+                </section>
+
+                <section className="flex w-[60%] items-center justify-center gap-24">
+                    <div>
                         <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
                          font-Poppints">Photo</p>
                         <button
@@ -105,7 +163,16 @@ export default function EditPatientForm(Props: PatientEditDataInterface) {
                             onClick={() => {fileImgRef.current.click()}}
                         >Select File</button>
                         <input className="invisible absolute left-[-200%]" type="file" ref={fileImgRef} />
-                    </label>
+                    </div>
+
+                    <div>
+                        <p className="!text-[red] font-extrabold pl-[1px] py-2 cursor-pointer
+                         font-Poppints">Delete</p>
+                        <button
+                            className={`flex items-center justify-center !w-72 !h-12 !pl-3 rounded-xl bg-[#ff3f3f] hover:bg-[#fc0505] border-2 border-[#df0404] text-white text-xl`}
+                            onClick={() => {}}
+                        >Delete Patient</button>
+                    </div>
                 </section>
 
                 <button className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#0072FF] hover:bg-[#0068e8] border-2 border-[#0058C6] rounded-3xl">Submit</button>

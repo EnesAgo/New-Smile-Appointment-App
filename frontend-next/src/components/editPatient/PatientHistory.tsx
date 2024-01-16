@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import {PatientEventInterface} from "@/@types/interfaces";
+import {IPatientEventInterface} from "@/@types/interfaces";
 import humanReadableNumber from "@/functions/humanReadableNumber";
 
 
-export default function PatientHistory(Props: PatientEventInterface) {
+export default function PatientHistory(Props: IPatientEventInterface) {
     const patientHistoryData = Props.patientHistoryData
 
     const [head, setHead] = useState<any>([])

@@ -24,6 +24,9 @@ export default function Patient() {
         tel: "hadzhi mustafa no. 51",
         birthDate: "hadzhi mustafa no. 51",
         birthPlace: "hadzhi mustafa no. 51",
+        debt: 100,
+        debtCurrencyType: "Euro",
+        status: true,
         EMBG: "hadzhi mustafa no. 51",
         img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.awAiMS1BCAQ2xS2lcdXGlwHaHH%26pid%3DApi&f=1&ipt=da636c11b0380e062d4a8ab26a212d392e7cb46a8ffd5fc083dee44e68c266a4&ipo=images",
     }

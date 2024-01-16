@@ -31,6 +31,18 @@ const {
 } = EventFunctions;
 
 
+//Patient Func imports
+const PatientFunctions = require("./dbController/PatientSchemaController")
+const {
+    createPatient: createPatient,
+    findOnePatient: findOnePatient,
+    findAllPatients: findAllPatients,
+    updatePatient: updatePatient,
+    deletePatient: deletePatient,
+} = PatientFunctions;
+
+
+
 
 
 require('dotenv').config()
@@ -135,6 +147,9 @@ app.use(express.json({limit: '1000mb'}));
 
 
 
+
+
+
     //events
 
     //create event
@@ -230,6 +245,102 @@ app.use(express.json({limit: '1000mb'}));
         const data = await deleteEvent(deleteduuID);
         res.send(data)
     })
+
+
+
+
+
+
+
+
+
+
+    //Patients
+
+    //create patient
+    app.post("/createPatient", verify, async (req, res) => {
+        const defaultImg = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.awAiMS1BCAQ2xS2lcdXGlwHaHH%26pid%3DApi&f=1&ipt=da636c11b0380e062d4a8ab26a212d392e7cb46a8ffd5fc083dee44e68c266a4&ipo=images'
+
+        const data = {
+            name: req.body.name,
+            surname: req.body.surname,
+            bornIn: req.body.bornIn,
+            birthPlace: req.body.birthPlace,
+
+            email: req.body.email,
+            phone: req.body.phone,
+            embg: req.body.embg,
+            debt: 0,
+            debtCurrencyType: "Euro",
+            status: false,
+
+            patientImage: req.body.patient || defaultImg,
+        }
+
+        const event = await createPatient(data)
+        res.json(event)
+    })
+
+    //get all events
+    app.get("/findAllPatients", verify, async (req,res) => {
+        let page;
+
+        if(req.query.page){
+            page = parseInt(req.query.page);
+        }
+        else{
+            page = 1;
+        }
+        const data = await findAllPatients(page)
+        res.json(data)
+    })
+
+    //get all patient
+    app.get("/findOnePatient", verify, async (req,res) => {
+
+        const UserUUID = req.query.patientUUID;
+
+        const Patient = await findOnePatient(UserUUID)
+
+        res.json(Patient)
+    })
+
+    //update event
+    app.put("/updatePatient", verify, async (req, res) => {
+
+        const data = {
+            name: req.body.name,
+            surname: req.body.surname,
+            bornIn: req.body.bornIn,
+            birthPlace: req.body.birthPlace,
+
+            email: req.body.email,
+            phone: req.body.phone,
+            embg: req.body.embg,
+            debt: req.body.debt,
+            debtCurrencyType: req.body.debtCurrencyType,
+            status: req.body.status,
+
+            patientImage: req.body.patient,
+        }
+
+        const uuID = req.query.uuID
+
+        const Patient = await updatePatient(data, uuID)
+        res.json(Patient)
+    })
+
+    //delete event
+    app.delete("/deletePatient/:uuID", verify, async (req, res) => {
+        const deleteduuID = req.params.uuID;
+        const data = await deletePatient(deleteduuID);
+        res.send(data)
+    })
+
+
+
+
+
 
 
 
