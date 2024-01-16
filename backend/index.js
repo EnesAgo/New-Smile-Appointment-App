@@ -38,6 +38,7 @@ const PatientFunctions = require("./dbController/PatientSchemaController")
 const {
     createPatient: createPatient,
     findOnePatient: findOnePatient,
+    searchPatients: searchPatients,
     findAllPatients: findAllPatients,
     updatePatient: updatePatient,
     deletePatient: deletePatient,
@@ -49,7 +50,7 @@ const {
 
 require('dotenv').config()
 
-const upload = multer({ dest: 'patient_Images/', limits: { fieldSize: 10000 * 1024 * 1024 }}) // 10000mb
+const upload = multer({ dest: 'public/parentName/', limits: { fieldSize: 10000 * 1024 * 1024 }}) // 10000mb
 
 const app = express();
 
@@ -61,7 +62,7 @@ app.use(cors({
     methods: ["GET","POST","PUT","DELETE"]
 }))
 
-// app.use(express.static('../frontend/build'));
+app.use(express.static('public'));
 app.use(express.json({limit: '10000mb'}));
 
 
@@ -269,10 +270,10 @@ app.use(express.json({limit: '10000mb'}));
             const uuidOne = uuidv4()
             const uuidTwo = uuidv4()
 
-            const finalName = `patient_Images/${uuidOne}-${uuidTwo}.png`
+            const finalName = `public/parentName/${uuidOne}-${uuidTwo}.png`
 
             console.log(req.file)
-            fs.renameSync(`patient_Images/${req.file.filename}`, finalName);
+            fs.renameSync(`public/parentName/${req.file.filename}`, finalName);
 
 
             res.json({finalName: finalName})
@@ -289,6 +290,8 @@ app.use(express.json({limit: '10000mb'}));
         const data = {
             name: req.body.name,
             surname: req.body.surname,
+            fullName: `${req.body.name} ${req.body.surname}`,
+            parentName: req.body.parentName,
             bornIn: req.body.bornIn,
             birthPlace: req.body.birthPlace,
 
@@ -306,7 +309,7 @@ app.use(express.json({limit: '10000mb'}));
         res.json(event)
     })
 
-    //get all events
+    //get all patients
     app.get("/findAllPatients", verify, async (req,res) => {
         let page;
 
@@ -320,14 +323,163 @@ app.use(express.json({limit: '10000mb'}));
         res.json(data)
     })
 
-    //get all patient
+    //search patients
+    app.get("/searchPatients", verify, async (req,res) => {
+        let page, limit;
+
+        if(req.query.page){
+            page = parseInt(req.query.page);
+        }
+        else{
+            page = 1;
+
+        }
+
+        if(req.query.page){
+            limit = parseInt(req.query.limit);
+        }
+        else{
+            limit = 15;
+
+        }
+
+
+        const data = await searchPatients(req.body.dataQuery, page, limit)
+        res.json(data)
+    })
+
+
+    //search active patients
+    app.get("/searchActivePatients", verify, async (req,res) => {
+        let page, limit;
+
+        if(req.query.page){
+            page = parseInt(req.query.page);
+        }
+        else{
+            page = 1;
+
+        }
+
+        if(req.query.page){
+            limit = parseInt(req.query.limit);
+        }
+        else{
+            limit = 15;
+
+        }
+
+        const data = await searchPatients({status: true}, page, limit)
+        res.json(data)
+    })
+
+    //search inActive patients
+    app.get("/searchInActivePatients", verify, async (req,res) => {
+        let page, limit;
+
+        if(req.query.page){
+            page = parseInt(req.query.page);
+        }
+        else{
+            page = 1;
+
+        }
+
+        if(req.query.page){
+            limit = parseInt(req.query.limit);
+        }
+        else{
+            limit = 15;
+
+        }
+
+        const data = await searchPatients({status: false}, page, limit)
+        res.json(data)
+    })
+
+    //search name patients
+    app.get("/searchFullNamePatients", verify, async (req,res) => {
+        let page, limit;
+
+        if(req.query.page){
+            page = parseInt(req.query.page);
+        }
+        else{
+            page = 1;
+
+        }
+
+        if(req.query.page){
+            limit = parseInt(req.query.limit);
+        }
+        else{
+            limit = 15;
+
+        }
+
+        const data = await searchPatients({fullName: { $regex: req.query.fullName, $options: 'i' }}, page, limit)
+        res.json(data)
+    })
+
+    //search phone patients
+    app.get("/searchPhonePatients", verify, async (req,res) => {
+        let page, limit;
+
+        if(req.query.page){
+            page = parseInt(req.query.page);
+        }
+        else{
+            page = 1;
+
+        }
+
+        if(req.query.page){
+            limit = parseInt(req.query.limit);
+        }
+        else{
+            limit = 15;
+
+        }
+
+        const data = await searchPatients({phone: { $regex: req.query.phone, $options: 'i' }}, page, limit)
+        res.json(data)
+    })
+
+    //search no patients
+    app.get("/searchNoPatients", verify, async (req,res) => {
+        let page, limit;
+
+        if(req.query.page){
+            page = parseInt(req.query.page);
+        }
+        else{
+            page = 1;
+
+        }
+
+        if(req.query.page){
+            limit = parseInt(req.query.limit);
+        }
+        else{
+            limit = 15;
+
+        }
+
+        console.log(req.query)
+
+        // const data = await searchPatients({no: parseInt(req.query.no)}, page, limit)
+        res.json(parseInt(req.query.no))
+    })
+
+
+    //get one patient
     app.get("/findOnePatient", verify, async (req,res) => {
 
         const UserUUID = req.query.patientUUID;
 
         const Patient = await findOnePatient(UserUUID)
 
-        res.json(Patient)
+        res.json(Patient[0])
     })
 
     //update event

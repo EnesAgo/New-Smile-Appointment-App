@@ -41,6 +41,8 @@ const PatientSchema = new mongoose.Schema({
 
     name: String,
     surname: String,
+    fullName: String,
+    parentName: String,
     bornIn: String,
     birthPlace: String,
 

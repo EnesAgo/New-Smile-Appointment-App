@@ -57,6 +57,25 @@ async function findOnePatient(uuID){
     }
 }
 
+async function searchPatients(data, page, limit){
+    try{
+
+        const offset = (page - 1) * limit;
+
+        const total = await PatientSchema.countDocuments(data);
+
+        const searchedPatients = await PatientSchema.find(data).skip(offset).limit(limit);
+
+        if(!searchedPatients || searchedPatients === null) return {error: "Patients not found"}
+
+        return { total, searchedPatients, page }
+    }
+    catch (e){
+        console.log(e)
+        return {error: e}
+    }
+}
+
 async function findAllPatients(page){
     try{
         const limit = 15;
@@ -102,6 +121,7 @@ async function deletePatient(deleteduuID) {
 module.exports = {
     createPatient: createPatient,
     findOnePatient: findOnePatient,
+    searchPatients: searchPatients,
     findAllPatients: findAllPatients,
     updatePatient: updatePatient,
     deletePatient: deletePatient,

@@ -3,7 +3,7 @@ import InpLg from "@/components/Inputs/LogInp";
 import {IPatientEditDataInterface} from "@/@types/interfaces";
 import LogButton from "@/components/Inputs/LogButton";
 
-export default function EditPatientForm(Props: IPatientEditDataInterface) {
+export default function EditPatientForm(Props: any) {
 
     const patientData = Props.patientData
 
@@ -39,18 +39,18 @@ export default function EditPatientForm(Props: IPatientEditDataInterface) {
         surnameRef.current.value = patientData.surname
         parentRef.current.value = patientData.parentName
         emailRef.current.value = patientData.email
-        telRef.current.value = patientData.tel
-        addresRef.current.value = patientData.addres
+        telRef.current.value = patientData.phone
+        addresRef.current.value = patientData.address
         birthDateRef.current.value = patientData.birthDate
         birthPlaceRef.current.value = patientData.birthPlace
         debtRef.current.value = patientData.debt
         debtCurrencyTypeRef.current.value = patientData.debtCurrencyType
-        embgRef.current.value = patientData.EMBG
+        embgRef.current.value = patientData.embg
 
         setPatientStatus(patientData.status)
 
         setPatientImg(patientData.img)
-    }, [])
+    }, [Props])
 
 
 

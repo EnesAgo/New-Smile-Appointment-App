@@ -5,7 +5,7 @@ import InpLg from "@/components/Inputs/LogInp";
 import SelectInp from "@/components/Inputs/SelectInp";
 import humanReadableNumber from "@/functions/humanReadableNumber";
 
-export default function PatientList({data, head, searchInpRef, totalPatients}: any) {
+export default function PatientList({data, head, searchInpRef, searchInpTypeRef, totalPatients, onInpValChangeFunc}: any) {
     const router = useRouter()
 
     const iconPrefix = '/assets/imgs/icons'
@@ -17,6 +17,7 @@ export default function PatientList({data, head, searchInpRef, totalPatients}: a
     const [pageNum, setPageNum] = useState(1)
 
 
+
     return (
         <section className="flex flex-col items-center justify-center w-[70%] min-h-32 bg-white rounded-[30px] pt-10">
 
@@ -25,9 +26,8 @@ export default function PatientList({data, head, searchInpRef, totalPatients}: a
                 <h1 className="font-bold text-3xl font-sans">All Customers</h1>
 
                 <div className="flex gap-4">
-                    <InpLg className={"!bg-[#f9fbff] placeholder-[#b5b7c0] !text-gray-800"} placeholderVal={"Search"} inpType={"text"} inpRef={searchInpRef} hasPic={true} imgSrc={`${iconPrefix}/search-icon.png`} imgAlt={"userIcon"} />
-                    <SelectInp className={"!bg-[#f9fbff] !text-[#3d3cxx42] text-sm !w-44 !rounded-xl"} placeholderVal={"Search"} inpType={"text"} inpRef={searchInpRef} hasPic={false} />
-
+                    <InpLg className={"!bg-[#f9fbff] placeholder-[#b5b7c0] !text-gray-800"} placeholderVal={"Search"} inpType={"text"} inpRef={searchInpRef} hasPic={true} imgSrc={`${iconPrefix}/search-icon.png`} imgAlt={"userIcon"} onChange={onInpValChangeFunc} />
+                    <SelectInp className={"!bg-[#f9fbff] !text-[#3d3cxx42] text-sm !w-44 !rounded-xl"} inpRef={searchInpTypeRef} hasPic={false} onChange={onInpValChangeFunc} />
                 </div>
 
             </div>
@@ -40,6 +40,7 @@ export default function PatientList({data, head, searchInpRef, totalPatients}: a
                                 <thead className="">
                                 <tr>
                                     {head && head.map((e: any) =>
+                                        e != 'uuID' &&
                                         <th key={Math.random()*1000}
                                             scope="col"
                                             className="pl-2 py-3 text-xs font-bold text-left text-gray-400 uppercase"
@@ -52,26 +53,33 @@ export default function PatientList({data, head, searchInpRef, totalPatients}: a
                                 <tbody className="divide-y divide-gray-200">
                                 {data && data.map((e:any) =>
 
-                                    <tr key={Math.random()*1000} className="cursor-pointer" onClick={() => router.push(`/patients/${e.no}`)}>
-                                        {head && head.map((tdInd: any) => (
-                                            tdInd === 'status' ?
+                                    <tr key={Math.random()*1000} className="cursor-pointer" onClick={() => router.push(`/patients/${e.uuID}`)}>
+                                        {head && head.map((tdInd: any) => {
 
-                                            <td key={Math.random()*1000} className="pl-2 py-4 text-sm whitespace-nowrap text-gray-800">
-                                                {
 
-                                                    e[tdInd] === true ?
+                                            if(tdInd !== 'uuID')
+                                            return (
+                                                tdInd === 'status' ?
 
-                                                    <div className="w-20 h-10 flex items-center justify-center border-[1px] border-[#008767] bg-[#a6e7d9] text-[#008767] rounded">Active</div> :
+                                                    <td key={Math.random()*1000} className="pl-2 py-4 text-sm whitespace-nowrap text-gray-800">
+                                                        {
 
-                                                    <div className="w-20 h-10 flex items-center justify-center border-[1px] border-[#DF0404] bg-[#FFC5C5] text-[#DF0404] rounded">Inactive</div>
+                                                            e[tdInd] === true ?
 
-                                                }
-                                            </td>:
+                                                                <div className="w-20 h-10 flex items-center justify-center border-[1px] border-[#008767] bg-[#a6e7d9] text-[#008767] rounded">Active</div> :
 
-                                            <td key={Math.random()*1000} className="pl-2 py-2 text-sm whitespace-nowrap text-gray-800">
-                                                {String(e[tdInd])}
-                                            </td>
-                                        ))}
+                                                                <div className="w-20 h-10 flex items-center justify-center border-[1px] border-[#DF0404] bg-[#FFC5C5] text-[#DF0404] rounded">Inactive</div>
+
+                                                        }
+                                                    </td>:
+
+                                                    <td key={Math.random()*1000} className="pl-2 py-2 text-sm whitespace-nowrap text-gray-800">
+                                                        {String(e[tdInd])}
+                                                    </td>
+                                            )
+
+                                        }
+                                        )}
                                     </tr>
 
                                 )}

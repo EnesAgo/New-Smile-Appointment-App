@@ -6,6 +6,16 @@ export interface IInpLgPropsInterface{
     imgSrc?: string,
     imgAlt?: string,
     className?: string
+    onChange?: any
+}
+
+export interface ISelInpProps{
+    inpRef: any,
+    hasPic: boolean,
+    imgSrc?:string,
+    imgAlt?: string,
+    className?: String
+    onChange?: any
 }
 
 export interface IPatientEditDataInterface{

@@ -4,8 +4,8 @@ import humanReadableNumber from "@/functions/humanReadableNumber";
 
 export default function PatientHeaderSec({activePatients, totalPatients, inactivePatients}: any) {
 
-    const actPerc = ((100*activePatients)/totalPatients).toFixed(0);
-    const incactPerc = ((100*inactivePatients)/totalPatients).toFixed(0);
+    const actPerc = parseInt(((100*activePatients)/totalPatients).toFixed(0));
+    const incactPerc = parseInt(((100*inactivePatients)/totalPatients).toFixed(0));
 
     const readableActivePatients = humanReadableNumber(activePatients)
     const readableTotalPatients = humanReadableNumber(totalPatients)
