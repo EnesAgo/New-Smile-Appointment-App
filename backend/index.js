@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
+const multer = require('multer');
+const fs = require('fs');
 const moment = require('moment');
 const {verify} = require("jsonwebtoken");
 
@@ -47,7 +49,7 @@ const {
 
 require('dotenv').config()
 
-
+const upload = multer({ dest: 'patient_Images/', limits: { fieldSize: 10000 * 1024 * 1024 }}) // 10000mb
 
 const app = express();
 
@@ -60,7 +62,7 @@ app.use(cors({
 }))
 
 // app.use(express.static('../frontend/build'));
-app.use(express.json({limit: '1000mb'}));
+app.use(express.json({limit: '10000mb'}));
 
 
 
@@ -164,6 +166,7 @@ app.use(express.json({limit: '1000mb'}));
             patient: req.body.patient,
             bill: req.body.bill,
             billType: req.body.billType || "mkd",
+            payed: req.body.payed || false
         }
 
         const event = await createEvent(data)
@@ -227,10 +230,11 @@ app.use(express.json({limit: '1000mb'}));
             end: req.body.end,
             description: req.body.description,
             from: req.body.from,
-            color: req.body.color || "#255984",
+            color: req.body.color,
             patient: req.body.patient,
             bill: req.body.bill,
             billType: req.body.billType,
+            payed: req.body.payed
         }
 
         const uuID = req.query.uuID
@@ -258,6 +262,27 @@ app.use(express.json({limit: '1000mb'}));
     //Patients
 
     //create patient
+    app.post("/uploadPatientImage", upload.single('image'), async (req, res) => {
+
+        try{
+
+            const uuidOne = uuidv4()
+            const uuidTwo = uuidv4()
+
+            const finalName = `patient_Images/${uuidOne}-${uuidTwo}.png`
+
+            console.log(req.file)
+            fs.renameSync(`patient_Images/${req.file.filename}`, finalName);
+
+
+            res.json({finalName: finalName})
+        }
+        catch(e){
+            res.json({error: e})
+        }
+
+    })
+
     app.post("/createPatient", verify, async (req, res) => {
         const defaultImg = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.awAiMS1BCAQ2xS2lcdXGlwHaHH%26pid%3DApi&f=1&ipt=da636c11b0380e062d4a8ab26a212d392e7cb46a8ffd5fc083dee44e68c266a4&ipo=images'
 
