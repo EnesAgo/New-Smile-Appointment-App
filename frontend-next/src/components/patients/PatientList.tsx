@@ -36,7 +36,7 @@ export default function PatientList({data, head, searchInpRef, totalPatients}: a
                 <div className="overflow-x-auto w-full">
                     <div className="w-full inline-block align-middle">
                         <div className="overflow-hidden rounded-lg flex justify-center">
-                            <table className="w-full divide-y divide-gray-200 mx-10 table-fixed">
+                            <table className="w-full divide-y divide-gray-200 mx-10 table-auto">
                                 <thead className="">
                                 <tr>
                                     {head && head.map((e: any) =>
@@ -52,7 +52,7 @@ export default function PatientList({data, head, searchInpRef, totalPatients}: a
                                 <tbody className="divide-y divide-gray-200">
                                 {data && data.map((e:any) =>
 
-                                    <tr key={Math.random()*1000} className="cursor-pointer" onClick={() => router.push(`/patients/${e.id}`)}>
+                                    <tr key={Math.random()*1000} className="cursor-pointer" onClick={() => router.push(`/patients/${e.no}`)}>
                                         {head && head.map((tdInd: any) => (
                                             tdInd === 'status' ?
 
@@ -85,7 +85,7 @@ export default function PatientList({data, head, searchInpRef, totalPatients}: a
             </div>
 
             <div className="flex w-full min-h-16 items-center justify-between px-12 pt-8 pb-12">
-                <h5 className="text-sm text-gray-400" >Showing data {data[0].id} to {data[data.length-1].id} of {readableTotalPatients} entries </h5>
+                <h5 className="text-sm text-gray-400" >Showing data {data[0]?.no} to {data[data.length-1]?.no} of {readableTotalPatients} entries </h5>
                 <div className="flex gap-2">
                     <button
                         className="w-6 h-6 bg-[#f5f5f5] border-[#eee] border rounded font-Poppints font-bold text-xl text-[#404B52] leading-3"
