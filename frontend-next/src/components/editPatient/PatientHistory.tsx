@@ -1,25 +1,43 @@
 import React, {useEffect, useState} from 'react'
-import {IPatientEventInterface} from "@/@types/interfaces";
 import humanReadableNumber from "@/functions/humanReadableNumber";
+import moment from "moment";
 
 
-export default function PatientHistory(Props: IPatientEventInterface) {
-    const patientHistoryData = Props.patientHistoryData
-
+export default function PatientHistory(Props: any) {
     const [head, setHead] = useState<any>([])
-    const [totalEvents, setTotalEvents] = useState(10000)
+    const [historyDataShow, setHistoryDataShow] = useState<any>([])
+    const [totalEvents, setTotalEvents] = useState(0)
 
     const iconPrefix = '/assets/imgs/icons'
-    const limit = 15;
+    const limit = Props.totalEvents < 15 ? Props.totalEvents : 15;
 
-    const readableTotalPatients = humanReadableNumber(totalEvents)
+    const readableTotalEvents = humanReadableNumber(totalEvents)
 
 
     const [pageNum, setPageNum] = useState(1)
 
     useEffect(() => {
-        setHead(Object.keys(patientHistoryData[0]))
-    }, [])
+            setTotalEvents(Props.totalEvents)
+
+            const dataToUse = Props.patientHistoryData.map((e: any) => {
+                return {
+                    title: e.title,
+                    start: moment(e.start).format("DD MMM YYYY hh:mm"),
+                    end: moment(e.end).format("DD MMM YYYY hh:mm"),
+                    description: e.description,
+                    // patient: e.patient,
+                    currency: e.billType,
+                    bill: e.bill,
+                    from: e.fromName,
+                    // color: e.color,
+                    // uuID: e.uuID
+                }
+            })
+
+
+            setHead(Object.keys(dataToUse[0]))
+            setHistoryDataShow(dataToUse)
+    }, [Props])
 
     return (
         <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
@@ -34,7 +52,7 @@ export default function PatientHistory(Props: IPatientEventInterface) {
                 <div className="overflow-x-auto w-full">
                     <div className="w-full inline-block align-middle">
                         <div className="overflow-hidden rounded-lg flex justify-center">
-                            <table className="w-full divide-y divide-gray-200 ml-10 mr-7 table-fixed">
+                            <table className="w-full divide-y divide-gray-200 ml-10 mr-7 table-auto">
                                 <thead>
                                 <tr>
                                     {head && head.map((e: any) =>
@@ -50,7 +68,7 @@ export default function PatientHistory(Props: IPatientEventInterface) {
                                 </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200">
-                                {patientHistoryData && patientHistoryData.map((e:any) =>
+                                {historyDataShow && historyDataShow.map((e:any) =>
 
                                     <tr key={Math.random()*1000}>
                                         {head && head.map((tdInd: any) => (
@@ -72,7 +90,7 @@ export default function PatientHistory(Props: IPatientEventInterface) {
             </div>
 
             <div className="flex w-full min-h-16 items-center justify-between px-12 pt-8 pb-12">
-                <h5 className="text-sm text-gray-400" >Showing data {pageNum*limit} to {pageNum*limit} of {readableTotalPatients} entries </h5>
+                <h5 className="text-sm text-gray-400" >Showing data {pageNum*limit-limit+1} to {pageNum*limit} of {readableTotalEvents} entries </h5>
                 <div className="flex gap-2">
                     <button
                         className="w-6 h-6 bg-[#f5f5f5] border-[#eee] border rounded font-Poppints font-bold text-xl text-[#404B52] leading-3"

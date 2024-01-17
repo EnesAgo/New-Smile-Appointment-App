@@ -50,7 +50,7 @@ const {
 
 require('dotenv').config()
 
-const upload = multer({ dest: 'public/parentName/', limits: { fieldSize: 10000 * 1024 * 1024 }}) // 10000mb
+const upload = multer({ dest: 'public/patient_Images/', limits: { fieldSize: 10000 * 1024 * 1024 }}) // 10000mb
 
 const app = express();
 
@@ -163,10 +163,11 @@ app.use(express.json({limit: '10000mb'}));
             end: new Date(req.body.end),
             description: req.body.description,
             from: req.body.from,
+            fromName: req.body.fromName,
             color: req.body.color || "#255984",
             patient: req.body.patient,
             bill: req.body.bill,
-            billType: req.body.billType || "mkd",
+            billType: req.body.billType || "Euro",
             payed: req.body.payed || false
         }
 
@@ -198,7 +199,7 @@ app.use(express.json({limit: '10000mb'}));
         else{
             page = 1;
         }
-        const data = await findAllPatientEvents(page)
+        const data = await findAllPatientEvents(req.query.uuID ,page)
         res.json(data)
     })
 
@@ -270,10 +271,10 @@ app.use(express.json({limit: '10000mb'}));
             const uuidOne = uuidv4()
             const uuidTwo = uuidv4()
 
-            const finalName = `public/parentName/${uuidOne}-${uuidTwo}.png`
+            const finalName = `patient_Images/${uuidOne}-${uuidTwo}.png`
 
             console.log(req.file)
-            fs.renameSync(`public/parentName/${req.file.filename}`, finalName);
+            fs.renameSync(`public/patient_Images/${req.file.filename}`, `public/${finalName}`);
 
 
             res.json({finalName: finalName})
@@ -285,8 +286,6 @@ app.use(express.json({limit: '10000mb'}));
     })
 
     app.post("/createPatient", verify, async (req, res) => {
-        const defaultImg = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.awAiMS1BCAQ2xS2lcdXGlwHaHH%26pid%3DApi&f=1&ipt=da636c11b0380e062d4a8ab26a212d392e7cb46a8ffd5fc083dee44e68c266a4&ipo=images'
-
         const data = {
             name: req.body.name,
             surname: req.body.surname,
@@ -295,6 +294,8 @@ app.use(express.json({limit: '10000mb'}));
             bornIn: req.body.bornIn,
             birthPlace: req.body.birthPlace,
 
+            address: req.body.address,
+
             email: req.body.email,
             phone: req.body.phone,
             embg: req.body.embg,
@@ -302,7 +303,7 @@ app.use(express.json({limit: '10000mb'}));
             debtCurrencyType: "Euro",
             status: false,
 
-            patientImage: req.body.patient || defaultImg,
+            patientImage: req.body.patientImage,
         }
 
         const event = await createPatient(data)
@@ -488,8 +489,11 @@ app.use(express.json({limit: '10000mb'}));
         const data = {
             name: req.body.name,
             surname: req.body.surname,
+            parentName: req.body.parentName,
             bornIn: req.body.bornIn,
             birthPlace: req.body.birthPlace,
+
+            address: req.body.address,
 
             email: req.body.email,
             phone: req.body.phone,
@@ -498,7 +502,7 @@ app.use(express.json({limit: '10000mb'}));
             debtCurrencyType: req.body.debtCurrencyType,
             status: req.body.status,
 
-            patientImage: req.body.patient,
+            patientImage: req.body.patientImage,
         }
 
         const uuID = req.query.uuID
@@ -509,9 +513,18 @@ app.use(express.json({limit: '10000mb'}));
 
     //delete event
     app.delete("/deletePatient/:uuID", verify, async (req, res) => {
-        const deleteduuID = req.params.uuID;
-        const data = await deletePatient(deleteduuID);
-        res.send(data)
+        const AdminPass =  process.env.DELETEPASS || "AdminPass"
+
+        if(req.query.pass !== AdminPass){
+            res.json({error: "Password Incorrect"}).status(401)
+            return
+        }
+        else{
+            const deleteduuID = req.params.uuID;
+            const data = await deletePatient(deleteduuID);
+            res.json(data)
+        }
+
     })
 
 

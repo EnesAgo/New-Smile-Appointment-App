@@ -4,10 +4,9 @@ import HttpRequest from "@/requests/HttpRequest";
 import FormDataRequest from "@/requests/FormDataRequest";
 import {alertError, alertSuccess} from "@/functions/alertFunctions";
 import ToastContainerDefault from "@/components/toastContainer/ToastContainers";
+import {requestBaseUrl} from "@/requests/constants";
 
 export default function NewPatientForm() {
-    const [imagePath, setImagePath] = useState<any>(false)
-
     const nameRef = useRef<any>()
     const surnameRef = useRef<any>()
     const parentRef = useRef<any>()
@@ -25,12 +24,13 @@ export default function NewPatientForm() {
         const parentVal = parentRef.current.value;
         const emailVal = emailRef.current.value;
         const telVal = telRef.current.value;
-        const addresVal = addresRef.current.value;
+        const addressVal = addresRef.current.value;
         const birthDateVal = birthDateRef.current.value;
         const birthPlaceVal = birthPlaceRef.current.value;
         const embgVal = embgRef.current.value;
         const fileImgVal = fileImgRef.current.files[0];
 
+        let imgUrl = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.awAiMS1BCAQ2xS2lcdXGlwHaHH%26pid%3DApi&f=1&ipt=da636c11b0380e062d4a8ab26a212d392e7cb46a8ffd5fc083dee44e68c266a4&ipo=images'
 
         if(fileImgVal){
             const fileData = await FormDataRequest("/uploadPatientImage", fileImgVal)
@@ -42,61 +42,38 @@ export default function NewPatientForm() {
                 return
             }
 
-            setImagePath(fileData.finalName)
+            imgUrl = `${requestBaseUrl}/${fileData.finalName}`
+            console.log(`${requestBaseUrl}/${fileData.finalName}`)
         }
 
-        if(imagePath){
-            const postData = {
-                name: nameVal,
-                surname: surnameVal,
-                bornIn: birthDateVal,
-                birthPlace: birthPlaceVal,
+        const postData = {
+            name: nameVal,
+            surname: surnameVal,
+            parentName: parentVal,
+            bornIn: birthDateVal,
+            birthPlace: birthPlaceVal,
+            address: addressVal,
 
-                email: emailVal,
-                phone: telVal,
-                embg: embgVal,
+            email: emailVal,
+            phone: telVal,
+            embg: embgVal,
 
-                patientImage: imagePath
-            }
-
-            const postPatient:any = await HttpRequest.post("/createPatient", postData)
-
-            console.log(postPatient)
-
-            if(postPatient.error){
-                alertError(`error: ${postPatient.error}`)
-                console.log(postPatient.error)
-            }
-            else{
-                alertSuccess("Patient Successfully created")
-            }
-
-        } else{
-
-            const postData = {
-                name: nameVal,
-                surname: surnameVal,
-                bornIn: birthDateVal,
-                birthPlace: birthPlaceVal,
-
-                email: emailVal,
-                phone: telVal,
-                embg: embgVal,
-            }
-
-            const postPatient:any = await HttpRequest.post("/createPatient", postData)
-
-            console.log(postPatient)
-
-            if(postPatient.error){
-                alertError(`error: ${postPatient.error}`)
-                console.log(postPatient.error)
-            }
-            else{
-                alertSuccess("Patient Successfully created")
-            }
+            patientImage: imgUrl,
 
         }
+
+        const postPatient:any = await HttpRequest.post("/createPatient", postData)
+
+        console.log(postPatient)
+
+        if(postPatient.error){
+            alertError(`error: ${postPatient.error}`)
+            console.log(postPatient.error)
+        }
+        else{
+            alertSuccess("Patient Successfully created")
+        }
+
 
         nameRef.current.value = '';
         surnameRef.current.value = '';

@@ -9,8 +9,6 @@ import ToastContainerDefault from "@/components/toastContainer/ToastContainers";
 
 export async function getServerSideProps(){
     try{
-        // const data:any = await HttpRequest.get(`/findAllPatients?&page=1`)
-
         const response: any = await fetch(`${requestBaseUrl}/findAllPatients?page=1`)
         const resData: any = await response.json()
 
@@ -54,6 +52,10 @@ export default function Patients({ allPatients, activePatients, error }: any) {
         if (error) {
             console.log(error)
             alertError(`Error Occurred`)
+        }
+        else if(allPatients.AllPatients.length == 0){
+            console.log(allPatients.AllPatients.length)
+            alertError("There Are Not Any Patients")
         }
         else{
             console.log(allPatients, activePatients)
@@ -152,35 +154,42 @@ export default function Patients({ allPatients, activePatients, error }: any) {
 
             console.log(res)
 
-            dataToShowArray = res.searchedPatients.map((e: any) => {
-                if(JSON.parse(localStorage.jwtNewSmile).isAdmin){
-                    return {
-                        uuID: e.uuID,
-                        no: String(e.no),
-                        Name: `${e.name} ${e.surname}`,
-                        email: e.email,
-                        debt: e.debt,
-                        Currency: e.debtCurrencyType,
-                        status: e.status
+
+            if(res.searchedPatients.length == 0){
+                alertError("There Are Not Any Patients")
+            }
+            else{
+                dataToShowArray = res.searchedPatients.map((e: any) => {
+                    if(JSON.parse(localStorage.jwtNewSmile).isAdmin){
+                        return {
+                            uuID: e.uuID,
+                            no: String(e.no),
+                            Name: `${e.name} ${e.surname}`,
+                            email: e.email,
+                            debt: e.debt,
+                            Currency: e.debtCurrencyType,
+                            status: e.status
+                        }
                     }
-                }
-                else{
-                    return {
-                        uuID: e.uuID,
-                        no: String(e.no),
-                        Name: `${e.name} ${e.surname}`,
-                        phone: e.phone,
-                        email: e.email,
-                        debt: e.debt,
-                        Currency: e.debtCurrencyType,
-                        status: e.status
+                    else{
+                        return {
+                            uuID: e.uuID,
+                            no: String(e.no),
+                            Name: `${e.name} ${e.surname}`,
+                            phone: e.phone,
+                            email: e.email,
+                            debt: e.debt,
+                            Currency: e.debtCurrencyType,
+                            status: e.status
+                        }
                     }
-                }
-            })
+                })
 
 
-            setHead(Object.keys(dataToShowArray[0]))
-            setDataToShow(dataToShowArray)
+                setHead(Object.keys(dataToShowArray[0]))
+                setDataToShow(dataToShowArray)
+            }
+
 
 
         } catch (e: any){

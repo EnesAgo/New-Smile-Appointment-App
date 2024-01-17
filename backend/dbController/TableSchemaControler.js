@@ -15,6 +15,7 @@ const EventSchema = new mongoose.Schema({
     end: Date,
     description: String,
     from: String,
+    fromName: String,
     patient: String,
     bill: Number,
     billType: String,
@@ -45,6 +46,7 @@ const PatientSchema = new mongoose.Schema({
     parentName: String,
     bornIn: String,
     birthPlace: String,
+    address: String,
 
     email: String,
     phone: String,
