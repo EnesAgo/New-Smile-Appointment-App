@@ -71,7 +71,6 @@ async function searchPatients(data, page, limit){
         return { total, searchedPatients, page }
     }
     catch (e){
-        console.log(e)
         return {error: e}
     }
 }

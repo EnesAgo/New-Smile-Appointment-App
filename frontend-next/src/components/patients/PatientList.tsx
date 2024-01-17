@@ -96,12 +96,24 @@ export default function PatientList({data, head, searchInpRef, searchInpTypeRef,
                 <h5 className="text-sm text-gray-400" >Showing data {data[0]?.no} to {data[data.length-1]?.no} of {readableTotalPatients} entries </h5>
                 <div className="flex gap-2">
                     <button
+                        onClick={() => {
+                            if(pageNum > 1) {
+                                onInpValChangeFunc(pageNum-1)
+                                setPageNum((prev: any) => prev-1)
+                            }
+                        }}
                         className="w-6 h-6 bg-[#f5f5f5] border-[#eee] border rounded font-Poppints font-bold text-xl text-[#404B52] leading-3"
                     >{'<'}</button>
 
                     <p className="w-6 h-6 bg-[#5932EA] rounded font-Poppints font-bold text-xs text-[#fff] leading-3 flex items-center justify-center">{pageNum}</p>
 
                     <button
+                        onClick={() => {
+                            if(pageNum < totalPatients/limit) {
+                                onInpValChangeFunc(pageNum+1)
+                                setPageNum((prev: any) => prev+1)
+                            }
+                        }}
                         className="w-6 h-6 bg-[#f5f5f5] border-[#eee] border rounded font-Poppints font-bold text-xl text-[#404B52] leading-3"
                     >{'>'}</button>
 

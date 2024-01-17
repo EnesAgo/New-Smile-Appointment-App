@@ -133,7 +133,7 @@ app.use(express.json({limit: '10000mb'}));
 
         const user = await ChangeWorkerPassword(uuID, oldPass, newPass)
 
-        return user
+        res.json(user)
     })
     app.put("/changeWorkerColor", verify, async (req, res) => {
         const uuID = req.query.userUUID;
@@ -141,7 +141,7 @@ app.use(express.json({limit: '10000mb'}));
 
         const user = await ChangeWorkerColor(uuID, color)
 
-        return user
+        res.json(user)
     })
 
 
@@ -336,7 +336,7 @@ app.use(express.json({limit: '10000mb'}));
 
         }
 
-        if(req.query.page){
+        if(req.query.limit){
             limit = parseInt(req.query.limit);
         }
         else{
@@ -362,7 +362,7 @@ app.use(express.json({limit: '10000mb'}));
 
         }
 
-        if(req.query.page){
+        if(req.query.limit){
             limit = parseInt(req.query.limit);
         }
         else{
@@ -386,7 +386,7 @@ app.use(express.json({limit: '10000mb'}));
 
         }
 
-        if(req.query.page){
+        if(req.query.limit){
             limit = parseInt(req.query.limit);
         }
         else{
@@ -410,7 +410,7 @@ app.use(express.json({limit: '10000mb'}));
 
         }
 
-        if(req.query.page){
+        if(req.query.limit){
             limit = parseInt(req.query.limit);
         }
         else{
@@ -434,7 +434,7 @@ app.use(express.json({limit: '10000mb'}));
 
         }
 
-        if(req.query.page){
+        if(req.query.limit){
             limit = parseInt(req.query.limit);
         }
         else{
@@ -458,7 +458,7 @@ app.use(express.json({limit: '10000mb'}));
 
         }
 
-        if(req.query.page){
+        if(req.query.limit){
             limit = parseInt(req.query.limit);
         }
         else{

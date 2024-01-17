@@ -34,6 +34,9 @@ export default function HeaderComp() {
                             <Link href="/newPatient" rel="New-Patient" className={`hover:text-first-blue-hover ${NavHover==="newPatient" && "font-bold text-sec-blue"}`}>New Patient</Link>
                         </li>
                         <li>
+                            <Link href="/settings" rel="New-Patient" className={`hover:text-first-blue-hover ${NavHover==="newPatient" && "font-bold text-sec-blue"}`}>Settings</Link>
+                        </li>
+                        <li>
                             <span className="hover:text-first-blue-hover cursor-pointer" onClick={() => logOut()}>Log out</span>
                         </li>
                     </ul>

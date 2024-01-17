@@ -208,24 +208,24 @@ async function getOneWorker(uuID){
 async function ChangeWorkerPassword(uuID, oldPass, newPass){
     try{
 
-        const User = await Worker.findOne({ uuID: uuID })
+        const user = await Worker.findOne({
+            uuID: uuID
+        })
 
-        const validPass = await bcrypt.compare(oldPass, User.password);
-
-
-        if(!validPass) {
-            console.log({error: "Incorrect Password"})
-            return {error: "Incorrect Password"};
+        if(!user || user == null){
+            return {error: 'user not found'};
         }
 
+        const validPass = await bcrypt.compare(oldPass, user.password);
+        if(!validPass) return {error: 'user password incorrect'}
+
+
         const salt = await bcrypt.genSalt(10)
-        const hashedPassword = await bcrypt.hash(newPass, salt)
-
-
+        const newHashedPassword = await bcrypt.hash(newPass, salt)
 
         const updated = await Worker.findOneAndUpdate(
             {uuID: uuID},
-            {password: hashedPassword}
+            {password: newHashedPassword}
         )
 
         console.log(updated)
@@ -249,7 +249,20 @@ async function ChangeWorkerColor(uuID, userEventColor){
 
         const updated = await Worker.findOneAndUpdate({uuID: uuID}, {userEventColor: userEventColor})
 
-        return updated
+        const returnData = {
+            username: updated.username,
+            name: updated.name,
+            surname: updated.surname,
+            email: updated.email,
+
+            uuID: updated.uuID,
+            isAdmin: updated.isAdmin,
+
+            userEventColor: updated.userEventColor,
+
+        }
+
+        return returnData
 
     }catch (e){
         return {error: e}

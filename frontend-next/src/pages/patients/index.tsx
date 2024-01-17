@@ -107,7 +107,9 @@ export default function Patients({ allPatients, activePatients, error }: any) {
         return await HttpRequest.get(path)
     }
 
-    async function onInpValChangeFunc(){
+    async function onInpValChangeFunc(pageNum = 1){
+
+        console.log("yes")
 
         const query = SearchRef.current.value
         const queryType = SearchTypeRef.current.value
@@ -122,33 +124,33 @@ export default function Patients({ allPatients, activePatients, error }: any) {
             if(queryType == 'fullName'){
 
 
-                res = await getSearchPatient(`/searchFullNamePatients?fullName=${query}`)
+                res = await getSearchPatient(`/searchFullNamePatients?fullName=${query}&page=${pageNum}`)
 
                 console.log(res)
 
 
             } else if(queryType == 'no'){
 
-                res = await getSearchPatient(`/searchNoPatients?no=${query}`)
+                res = await getSearchPatient(`/searchNoPatients?no=${query}&page=${pageNum}`)
 
 
             } else if(queryType == 'phone'){
 
-                res = await getSearchPatient(`/searchPhonePatients?phone=${query}`)
+                res = await getSearchPatient(`/searchPhonePatients?phone=${query}&page=${pageNum}`)
 
 
             } if(queryType == 'active'){
 
-                res = await getSearchPatient(`/searchActivePatients`)
+                res = await getSearchPatient(`/searchActivePatients?page=${pageNum}`)
 
 
             } else if(queryType == 'inActive'){
 
-                res = await getSearchPatient(`/searchInActivePatients`)
+                res = await getSearchPatient(`/searchInActivePatients?page=${pageNum}`)
 
             } else{
 
-                res = await getSearchPatient(`/searchFullNamePatients?fullName=${query}`)
+                res = await getSearchPatient(`/searchFullNamePatients?fullName=${query}&page=${pageNum}`)
 
             }
 
@@ -188,6 +190,8 @@ export default function Patients({ allPatients, activePatients, error }: any) {
 
                 setHead(Object.keys(dataToShowArray[0]))
                 setDataToShow(dataToShowArray)
+
+                console.log(dataToShowArray)
             }
 
 

@@ -4,7 +4,9 @@ import EditPatientForm from "@/components/editPatient/EditPatientForm";
 import PatientHistory from "@/components/editPatient/PatientHistory";
 import {requestBaseUrl} from "@/requests/constants";
 import {alertError} from "@/functions/alertFunctions";
+import {useRouter} from "next/router";
 import ToastContainerDefault from "@/components/toastContainer/ToastContainers";
+import HttpRequest from "@/requests/HttpRequest";
 
 export async function getServerSideProps({ params }: any){
     try{
@@ -36,6 +38,8 @@ export async function getServerSideProps({ params }: any){
 
 
 export default function Patient({ data, hisData, error }: any) {
+
+    const router = useRouter()
 
     const [patientData, setPatientData] = useState<any>({
         name: "",
@@ -99,13 +103,30 @@ export default function Patient({ data, hisData, error }: any) {
 
     }, [])
 
+    async function fetchNewPage(pageNum=1){
+
+        try{
+            const hisData: any = await HttpRequest.get(`/findAllPatientEvents?uuID=${router.query.ID}&page=${pageNum}`)
+
+            console.log(hisData.AllEvents)
+            setPatientHistory(hisData.AllEvents)
+        }
+        catch (e){
+            console.log(e)
+            alertError("An Error Occurred")
+        }
+
+
+    }
+
 
     return (
         <>
             <HeaderComp />
+            <ToastContainerDefault />
             <main className="flex flex-col gridMain items-center gap-8 py-12">
                 <EditPatientForm patientData={patientData} />
-                <PatientHistory patientHistoryData={patientHistory} totalEvents={hisData.total} />
+                <PatientHistory patientHistoryData={patientHistory} totalEvents={hisData.total} fetchNewPage={fetchNewPage} />
             </main>
         </>
     )
