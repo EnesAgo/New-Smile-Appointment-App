@@ -160,6 +160,17 @@ async function updateEvent(data, uuID) {
     const startDate = moment(new Date(data.start)).subtract(14, 'days')
     const endDate = moment(new Date(data.end)).add(14, 'days')
 
+    const prevElement = await EventSchema.findOne({uuID: uuID})
+
+    if(
+        moment(prevElement.start).format("DD MMM YYYY hh:mm") === moment(data.start).format("DD MMM YYYY hh:mm") &&
+        moment(prevElement.end).format("DD MMM YYYY hh:mm") === moment(data.end).format("DD MMM YYYY hh:mm")
+    ){
+        const updated = await EventSchema.findOneAndUpdate({uuID: uuID}, data)
+
+        return updated;
+    }
+
     const AllEvents = await EventSchema.find({
         start: { $gte: startDate, $lte: endDate }
     });

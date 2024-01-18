@@ -44,14 +44,6 @@ async function createWorker(data){
             return {error: 'user email found'};
         }
 
-        //checkUserPhone
-        const oldUserPhone = await Worker.findOne({
-            phone: data.phone
-        })
-
-        if(oldUserPhone || oldUserPhone != null){
-            return {error: 'user phone number found'};
-        }
 
 
         const salt = await bcrypt.genSalt(10)

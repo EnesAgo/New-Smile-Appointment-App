@@ -35,6 +35,7 @@ export default function Appointments({ data, error }: any) {
     const [events, setEvents] = useState<any>([]);
     const [eventFormDates, setEventFormDates] = useState<any>();
     const [isNewEventForm, setIsNewEventForm] = useState(true)
+    const [selectedEvent, setSelectedEvent] = useState<any>({})
     const [defaultEditFormData, setDefaultEditFormData] = useState<any>({
         title: '',
         desc: '',
@@ -121,6 +122,7 @@ export default function Appointments({ data, error }: any) {
 
     const onSelectEvent = useCallback((event: any) => {
         console.log(event)
+        setSelectedEvent(event)
         setIsNewEventForm(false);
         setEvents((prev: any) => prev.filter((e: any) => e.uuID !== 'testUUID'))
 
@@ -214,6 +216,82 @@ export default function Appointments({ data, error }: any) {
 
     }
 
+    async function updateEvent(startRef:any, endRef:any, titleRef:any, descRef:any, patientNoRef:any, billRef:any, currencyRef:any) {
+        try{
+            const newStartVal = startRef.current.value;
+            const newEndVal = endRef.current.value;
+            const newTitleVal = titleRef.current.value;
+            const newDescVal = descRef.current.value;
+            const newPatientNoVal = patientNoRef.current.value;
+            const newBillVal = billRef.current.value;
+            const newCurrencyVal = currencyRef.current.value;
+
+
+            const patient: any = await HttpRequest.get(`/findOnePatientWithNo?patientNo=${newPatientNoVal}`)
+
+            if(patient.error){
+                console.log(patient.error)
+                alertError("An Error Occurred")
+                return
+            }
+            if(!window.localStorage.jwtNewSmile){
+                alertError("An Error Occurred")
+                return
+            }
+
+            const workerData = JSON.parse(window.localStorage.jwtNewSmile)
+
+            const fullStartDate = changeDateTime(eventFormDates.start, newStartVal)
+            const fullEndDate = changeDateTime(eventFormDates.end, newEndVal)
+
+            const eventObjData = {
+                ...selectedEvent,
+                title: newTitleVal,
+                start: fullStartDate,
+                end: fullEndDate,
+                description: newDescVal,
+                from: workerData.uuID,
+                fromName: workerData.username,
+                color: workerData.userEventColor,
+                patient: patient.uuID,
+                patientNo: newPatientNoVal,
+                bill: newBillVal,
+                billType: newCurrencyVal,
+            }
+
+            const updated: any = await HttpRequest.put(`/updateEvent?uuID=${selectedEvent.uuID}`, eventObjData)
+            if(updated.error){
+                console.log(updated.error)
+                alertError("An Error Occurred")
+                return
+            }
+            setEvents((prev: any) => prev.filter((e: any) => e.uuID !== selectedEvent.uuID))
+            alertSuccess("Element Successfully Updated")
+
+        } catch (e) {
+            console.log(e)
+            alertError("An Error Occurred")
+        }
+    }
+    async function deleteEvent(){
+        console.log(selectedEvent.uuID)
+
+        try{
+            const deleted: any = await HttpRequest.delete(`/deleteEvent/${selectedEvent.uuID}`)
+            if(deleted.error){
+                console.log(deleted.error)
+                alertError("An Error Occurred")
+                return
+            }
+            setEvents((prev: any) => prev.filter((e: any) => e.uuID !== selectedEvent.uuID))
+            alertSuccess("Element Successfully Deleted")
+
+        } catch (e) {
+            console.log(e)
+            alertError("An Error Occurred")
+        }
+    }
+
     return (
         <>
             <HeaderComp />
@@ -231,7 +309,7 @@ export default function Appointments({ data, error }: any) {
                         {
                             isNewEventForm ?
                                 <EventForm dates={eventFormDates} FormTitle={"New Event"} cancelEvent={cancelEvent} submitForm={postNewEvent} /> :
-                                <EventForm dates={eventFormDates} FormTitle={"Edit Event"} cancelEvent={cancelEvent} submitForm={postNewEvent} defaultInpVals={defaultEditFormData} isEdit={true} />
+                                <EventForm dates={eventFormDates} FormTitle={"Edit Event"} cancelEvent={cancelEvent} submitForm={updateEvent} deleteEvent={deleteEvent} defaultInpVals={defaultEditFormData} isEdit={true} />
 
                         }
                     </div>

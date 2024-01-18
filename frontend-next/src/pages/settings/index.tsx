@@ -6,6 +6,7 @@ import HttpRequest from "@/requests/HttpRequest";
 import ChangePassword from "@/components/settings/ChangePassword";
 import {useRouter} from "next/router";
 import ChangeColor from "@/components/settings/ChangeColor";
+import NewWorker from "@/components/settings/NewWorker";
 
 export default function Settings() {
 
@@ -118,6 +119,53 @@ export default function Settings() {
         }
     }
 
+    async function postNewWorker(usernameRef:any, nameRef:any, surnameRef:any, emailRef:any, passwordRef:any){
+        try{
+
+            if(
+                usernameRef.current.value === '' ||
+                nameRef.current.value === '' ||
+                surnameRef.current.value === '' ||
+                emailRef.current.value === '' ||
+                passwordRef.current.value === ''
+            ){
+                alertError("Please fill in the blanks")
+                return
+            }
+            
+            const objData ={
+                username: usernameRef.current.value,
+                name: nameRef.current.value,
+                surname: surnameRef.current.value,
+                email: emailRef.current.value,
+                password: passwordRef.current.value,
+                userEventColor: "#255984"
+            }
+
+            const NewWorker: any = await HttpRequest.post("/createWorker", objData)
+
+            console.log(NewWorker)
+
+            if(NewWorker.error){
+                alertError(`error: ${NewWorker.error}`)
+                console.log(NewWorker.error)
+            }
+            else{
+                alertSuccess("Worker Successfully created")
+
+                usernameRef.current.value = '';
+                nameRef.current.value = '';
+                surnameRef.current.value = '';
+                emailRef.current.value = '';
+                passwordRef.current.value = '';
+            }
+            
+        } catch (e){
+            alertError(`An Error Occurred`)
+            console.log(e)
+        }
+    }
+
     return (
         <>
             <HeaderComp />
@@ -125,6 +173,10 @@ export default function Settings() {
             <main className="flex flex-col gridMain m-12 items-center justify-center gap-8">
                 <ChangePassword submitForm={submitChangePassword} />
                 <ChangeColor colorRef={colorRef} changeColor={changeColor} val={colorVal} userData={userData} />
+                {
+                    userData?.isAdmin &&
+                    <NewWorker submitForm={postNewWorker} />
+                }
             </main>
         </>
     )

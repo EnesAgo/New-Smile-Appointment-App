@@ -12,9 +12,9 @@ export default function InpLg(Props: IInpLgPropsInterface) {
             {
                 onChange ?
 
-                <input type={inpType} ref={inpRef} className={`pl-12 w-80 h-10 bg-white rounded-lg ${className && className}`} placeholder={placeholderVal} onChange={onChange} />:
+                <input type={inpType} ref={inpRef} className={`pl-12 w-80 h-10 bg-white rounded-lg ${className && className}`} placeholder={placeholderVal} onChange={onChange} required />:
 
-                <input type={inpType} ref={inpRef} className={`pl-12 w-80 h-10 bg-white rounded-lg ${className && className}`} placeholder={placeholderVal} />
+                <input type={inpType} ref={inpRef} className={`pl-12 w-80 h-10 bg-white rounded-lg ${className && className}`} placeholder={placeholderVal} required />
 
             }
         </label>

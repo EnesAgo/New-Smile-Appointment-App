@@ -30,48 +30,54 @@ export default function NewPatientForm() {
         const embgVal = embgRef.current.value;
         const fileImgVal = fileImgRef.current.files[0];
 
-        let imgUrl = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.awAiMS1BCAQ2xS2lcdXGlwHaHH%26pid%3DApi&f=1&ipt=da636c11b0380e062d4a8ab26a212d392e7cb46a8ffd5fc083dee44e68c266a4&ipo=images'
+        try{
+            let imgUrl = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.awAiMS1BCAQ2xS2lcdXGlwHaHH%26pid%3DApi&f=1&ipt=da636c11b0380e062d4a8ab26a212d392e7cb46a8ffd5fc083dee44e68c266a4&ipo=images'
 
-        if(fileImgVal){
-            const fileData = await FormDataRequest("/uploadPatientImage", fileImgVal)
-            console.log(fileData)
+            if(fileImgVal){
+                const fileData = await FormDataRequest("/uploadPatientImage", fileImgVal)
+                console.log(fileData)
 
-            if(fileData.error){
-                alertError(`error: ${fileData.error}`)
-                console.log(fileData.error)
-                return
+                if(fileData.error){
+                    alertError(`error: ${fileData.error}`)
+                    console.log(fileData.error)
+                    return
+                }
+
+                imgUrl = `${requestBaseUrl}/${fileData.finalName}`
+                console.log(`${requestBaseUrl}/${fileData.finalName}`)
             }
 
-            imgUrl = `${requestBaseUrl}/${fileData.finalName}`
-            console.log(`${requestBaseUrl}/${fileData.finalName}`)
+            const postData = {
+                name: nameVal,
+                surname: surnameVal,
+                parentName: parentVal,
+                bornIn: birthDateVal,
+                birthPlace: birthPlaceVal,
+                address: addressVal,
+
+                email: emailVal,
+                phone: telVal,
+                embg: embgVal,
+
+                patientImage: imgUrl,
+
+            }
+
+            const postPatient:any = await HttpRequest.post("/createPatient", postData)
+
+            console.log(postPatient)
+
+            if(postPatient.error){
+                alertError(`error: ${postPatient.error}`)
+                console.log(postPatient.error)
+            }
+            else{
+                alertSuccess("Patient Successfully created")
+            }
         }
-
-        const postData = {
-            name: nameVal,
-            surname: surnameVal,
-            parentName: parentVal,
-            bornIn: birthDateVal,
-            birthPlace: birthPlaceVal,
-            address: addressVal,
-
-            email: emailVal,
-            phone: telVal,
-            embg: embgVal,
-
-            patientImage: imgUrl,
-
-        }
-
-        const postPatient:any = await HttpRequest.post("/createPatient", postData)
-
-        console.log(postPatient)
-
-        if(postPatient.error){
-            alertError(`error: ${postPatient.error}`)
-            console.log(postPatient.error)
-        }
-        else{
-            alertSuccess("Patient Successfully created")
+        catch (e){
+            alertError(`An Error Occurred`)
+            console.log(e)
         }
 
 
