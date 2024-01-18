@@ -28,6 +28,7 @@ const {
     findAllEvents: findAllEvents,
     findAllPatientEvents: findAllPatientEvents,
     findAllWorkerEvents: findAllWorkerEvents,
+    findOneEvent: findOneEvent,
     updateEvent: updateEvent,
     deleteEvent: deleteEvent,
 } = EventFunctions;
@@ -234,6 +235,14 @@ app.use(express.json({limit: '10000mb'}));
         console.log(userDate)
 
         const data = await findAllEventsFromThisMonth(userDate)
+        res.json(data)
+    })
+
+
+    app.get("/findOneEvent", verify, async (req,res) => {
+
+        const data = await findOneEvent(req.query.uuID)
+
         res.json(data)
     })
 

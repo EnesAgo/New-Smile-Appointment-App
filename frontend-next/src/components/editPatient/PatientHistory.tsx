@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from 'react'
 import humanReadableNumber from "@/functions/humanReadableNumber";
 import moment from "moment";
+import {useRouter} from "next/router";
 
 
 export default function PatientHistory(Props: any) {
     const [head, setHead] = useState<any>([])
     const [historyDataShow, setHistoryDataShow] = useState<any>([])
     const [totalEvents, setTotalEvents] = useState(0)
+
+    const router = useRouter()
 
     const iconPrefix = '/assets/imgs/icons'
     const limit = Props.totalEvents < 15 ? Props.totalEvents : 15;
@@ -30,7 +33,7 @@ export default function PatientHistory(Props: any) {
                     bill: e.bill,
                     from: e.fromName,
                     // color: e.color,
-                    // uuID: e.uuID
+                    uuID: e.uuID
                 }
             })
 
@@ -57,6 +60,7 @@ export default function PatientHistory(Props: any) {
                                 <tr>
                                     {head && head.map((e: any) =>
                                         e!=='color' &&
+                                        e!=='uuID' &&
 
                                         <th key={Math.random()*1000}
                                             scope="col"
@@ -70,12 +74,14 @@ export default function PatientHistory(Props: any) {
                                 <tbody className="divide-y divide-gray-200">
                                 {historyDataShow && historyDataShow.map((e:any) =>
 
-                                    <tr key={Math.random()*1000}>
+                                    <tr key={Math.random()*1000} className="cursor-pointer" onClick={() => router.push(`/patients/${Props.patientUUID}/${e.uuID}`)}>
                                         {head && head.map((tdInd: any) => (
                                             tdInd!=='color' &&
-                                                <td key={Math.random()*1000} className="pl-2 py-2 text-base whitespace-nowrap text-gray-800">
-                                                    {String(e[tdInd])}
-                                                </td>
+                                            tdInd!=='uuID' &&
+
+                                            <td key={Math.random()*1000} className="pl-2 py-2 text-base whitespace-nowrap text-gray-800">
+                                                {String(e[tdInd])}
+                                            </td>
                                         ))}
                                     </tr>
 

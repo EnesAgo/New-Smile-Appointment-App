@@ -155,6 +155,18 @@ async function findAllWorkerEvents(worker, page){
     }
 }
 
+async function findOneEvent(uuID){
+    try{
+        const Event = await EventSchema.findOne({uuID: uuID});
+
+        if(!Event || Event === null) return {error: "user not found"}
+
+        return Event
+    } catch (e){
+        return {error: e}
+    }
+}
+
 async function updateEvent(data, uuID) {
 
     const startDate = moment(new Date(data.start)).subtract(14, 'days')
@@ -211,6 +223,7 @@ module.exports = {
     findAllEvents: findAllEvents,
     findAllPatientEvents: findAllPatientEvents,
     findAllWorkerEvents: findAllWorkerEvents,
+    findOneEvent: findOneEvent,
     updateEvent: updateEvent,
     deleteEvent: deleteEvent,
 };
