@@ -83,11 +83,13 @@ async function createEvent(data){
     }
 }
 
-async function findAllEventsFromThisMonth(){
+async function findAllEventsFromThisMonth(userDate){
     try{
 
-        const startDate = moment(new Date()).subtract(14, 'days')
-        const endDate = moment(new Date()).add(14, 'days')
+        console.log(userDate)
+
+        const startDate = new Date(moment(new Date(userDate)).subtract(45, 'days').toISOString())
+        const endDate = new Date(moment(new Date(userDate)).add(45, 'days').toISOString())
 
         const AllEvents = await EventSchema.find({
             start: { $gte: startDate, $lte: endDate }
@@ -97,9 +99,10 @@ async function findAllEventsFromThisMonth(){
             start: { $gte: startDate, $lte: endDate }
         });
 
-        return { total, AllEvents }
+        return { total, AllEvents, userDate }
     }
     catch (e){
+        console.log(e)
         return {error: e}
     }
 }

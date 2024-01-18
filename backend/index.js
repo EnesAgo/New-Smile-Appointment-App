@@ -38,6 +38,7 @@ const PatientFunctions = require("./dbController/PatientSchemaController")
 const {
     createPatient: createPatient,
     findOnePatient: findOnePatient,
+    findOnePatientWithNo: findOnePatientWithNo,
     searchPatients: searchPatients,
     findAllPatients: findAllPatients,
     updatePatient: updatePatient,
@@ -166,6 +167,7 @@ app.use(express.json({limit: '10000mb'}));
             fromName: req.body.fromName,
             color: req.body.color || "#255984",
             patient: req.body.patient,
+            patientNo: parseInt(req.body.patientNo),
             bill: req.body.bill,
             billType: req.body.billType || "Euro",
             payed: req.body.payed || false
@@ -219,7 +221,19 @@ app.use(express.json({limit: '10000mb'}));
 
     //get events from this month
     app.get("/findAllEventsFromThisMonth", verify, async (req,res) => {
-        const data = await findAllEventsFromThisMonth()
+
+        let userDate;
+
+        if(req.query.userDate){
+            userDate = JSON.parse(req.query.userDate);
+        }
+        else{
+            userDate = new Date;
+        }
+
+        console.log(userDate)
+
+        const data = await findAllEventsFromThisMonth(userDate)
         res.json(data)
     })
 
@@ -234,6 +248,7 @@ app.use(express.json({limit: '10000mb'}));
             from: req.body.from,
             color: req.body.color,
             patient: req.body.patient,
+            patientNo: parseInt(req.body.patientNo),
             bill: req.body.bill,
             billType: req.body.billType,
             payed: req.body.payed
@@ -480,7 +495,17 @@ app.use(express.json({limit: '10000mb'}));
 
         const Patient = await findOnePatient(UserUUID)
 
-        res.json(Patient[0])
+        res.json(Patient)
+    })
+
+    //get one patient
+    app.get("/findOnePatientWithNo", verify, async (req,res) => {
+
+        const patientNo = req.query.patientNo;
+
+        const Patient = await findOnePatientWithNo(patientNo)
+
+        res.json(Patient)
     })
 
     //update event

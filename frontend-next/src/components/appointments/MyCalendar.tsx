@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useState} from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 
@@ -8,7 +8,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 const localizer = momentLocalizer(moment)
 
 
-export default function MyCalendar({calEvents}:any) {
+export default function MyCalendar({calEvents, handleNavigate, onSelectSlot, onSelectEvent}:any) {
 
     const dayPropGetter = useCallback(
         (date:any) => ({
@@ -42,6 +42,14 @@ export default function MyCalendar({calEvents}:any) {
 
                 dayPropGetter={dayPropGetter}
                 slotGroupPropGetter={slotGroupPropGetter}
+                eventPropGetter={(e: any) => ({
+                    style: { backgroundColor: e.color }
+                })}
+
+                selectable
+                onSelectSlot={onSelectSlot}
+                onSelectEvent={onSelectEvent}
+
 
                 views={{
                     month: true,
@@ -49,7 +57,7 @@ export default function MyCalendar({calEvents}:any) {
                     agenda: true
                 }}
                 defaultView={"week"}
-
+                onNavigate={handleNavigate}
                 style={{ height: 500, width: "100%" }}
             />
         </div>

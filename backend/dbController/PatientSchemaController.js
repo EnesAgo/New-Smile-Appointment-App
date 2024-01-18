@@ -45,7 +45,22 @@ async function createPatient(data){
 async function findOnePatient(uuID){
     try{
 
-        const Patient = await PatientSchema.find({uuID: uuID});
+        const Patient = await PatientSchema.findOne({uuID: uuID});
+
+        if(!Patient || Patient === null) return {error: "Patient not found"}
+
+
+        return Patient
+    }
+    catch (e){
+        return {error: e}
+    }
+}
+
+async function findOnePatientWithNo(no){
+    try{
+
+        const Patient = await PatientSchema.findOne({no: no});
 
         if(!Patient || Patient === null) return {error: "Patient not found"}
 
@@ -120,6 +135,7 @@ async function deletePatient(deleteduuID) {
 module.exports = {
     createPatient: createPatient,
     findOnePatient: findOnePatient,
+    findOnePatientWithNo: findOnePatientWithNo,
     searchPatients: searchPatients,
     findAllPatients: findAllPatients,
     updatePatient: updatePatient,
