@@ -67,6 +67,7 @@ export default function Patients({ allPatients, activePatients, error }: any) {
                         no: String(e.no),
                         Name: `${e.name} ${e.surname}`,
                         email: e.email,
+                        phone: e.phone,
                         debt: e.debt,
                         Currency: e.debtCurrencyType,
                         status: e.status
