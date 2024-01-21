@@ -168,7 +168,7 @@ app.use(express.json({limit: '10000mb'}));
             fromName: req.body.fromName,
             color: req.body.color || "#255984",
             patient: req.body.patient,
-            patientNo: parseInt(req.body.patientNo),
+            patientName: req.body.patientName,
             bill: req.body.bill,
             billType: req.body.billType || "Euro",
             payed: req.body.payed || false
@@ -257,7 +257,7 @@ app.use(express.json({limit: '10000mb'}));
             from: req.body.from,
             color: req.body.color,
             patient: req.body.patient,
-            patientNo: parseInt(req.body.patientNo),
+            patientName: req.body.patientName,
             bill: req.body.bill,
             billType: req.body.billType,
             payed: req.body.payed

@@ -17,6 +17,8 @@ export default function EventForm(
         deleteEvent = () => {}
     }: any) {
 
+    console.log(defaultInpVals.desc)
+
     const startRef:any = useRef();
     const endRef:any = useRef();
     const titleRef:any = useRef();
@@ -36,27 +38,27 @@ export default function EventForm(
 
                 <div className="flex w-[80%] justify-between">
                     {/*<input className="mx-2 px-2 w-24 h-8 border-b-dark border-b-[2px] !bg-[rgba(255,255,255,0.5)]" type="time" ref={startRef} value={dates && Array.from(dates.start.toString().split(" "))[4]} />*/}
-                    <input className="px-2 w-[45%] h-8 border-b-dark border-b-[2px] !bg-white rounded-t" type="time" ref={startRef} value={dates && Array.from(dates.start.toString().split(" "))[4]} required />
+                    <input className="px-2 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t" type="time" ref={startRef} defaultValue={dates && Array.from(dates.start.toString().split(" "))[4]} required />
                     <p className="font-Poppints font-extrabold">-</p>
                     {/*<input className="mx-2 px-2 w-24 h-8 border-b-dark border-b-[2px] !bg-[rgba(255,255,255,0.5)]" type="time" ref={endRef} defaultValue={dates && Array.from(dates.end.toString().split(" "))[4]} />*/}
-                    <input className="px-2 w-[45%] h-8 border-b-dark border-b-[2px] !bg-white rounded-t " type="time" ref={endRef} defaultValue={dates && Array.from(dates.end.toString().split(" "))[4]} required />
+                    <input className="px-2 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t " type="time" ref={endRef} defaultValue={dates && Array.from(dates.end.toString().split(" "))[4]} required />
 
                 </div>
 
                 <div className="w-[80%] flex justify-between">
-                    <input className="pl-1 w-[45%] h-8 border-b-dark border-b-[2px] bg-white rounded-t" defaultValue={defaultInpVals.title} type="text" ref={titleRef} placeholder={"Title"} required />
-                    <input className="pl-1 w-[45%] h-8 border-b-dark border-b-[2px] bg-white rounded-t" defaultValue={defaultInpVals.no} type="number" ref={patientNoRef} placeholder={"patient No"} required />
+                    <input className="pl-1 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t" defaultValue={defaultInpVals.title} type="text" ref={titleRef} placeholder={"Title"} required />
+                    <input className="pl-1 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t" defaultValue={defaultInpVals.no} type="text" ref={patientNoRef} placeholder={"Name Surname"} required />
                 </div>
 
                 <div className="w-[80%] flex justify-between">
-                    <input className="pl-1 w-[45%] h-8 border-b-dark border-b-[2px] bg-white rounded-t" defaultValue={defaultInpVals.bill} type="number" ref={billRef} placeholder={"Bill"} required />
-                    <input className="pl-1 w-[45%] h-8 border-b-dark border-b-[2px] bg-white rounded-t" defaultValue={defaultInpVals.currency} type="text" ref={currencyRef} placeholder={"Currency"} required />
+                    <input className="pl-1 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t" defaultValue={defaultInpVals.bill} type="number" ref={billRef} placeholder={"Bill"} required />
+                    <input className="pl-1 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t" defaultValue={defaultInpVals.currency} type="text" ref={currencyRef} placeholder={"Currency"} required />
                 </div>
 
 
-                <textarea rows={5} cols={60} className="mx-2 w-[80%] !h-[100px] border-b-dark border-b-[2px] bg-white rounded-t text-base" placeholder={"Description"} ref={descRef} required>
+                <textarea rows={5} cols={60} className="mx-2 w-[80%] !h-[100px] border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t text-base" placeholder={"Description"} ref={descRef} required>
                     {
-                        defaultInpVals.desc !== '' &&
+                        defaultInpVals.desc &&
                         String(defaultInpVals.desc)
                     }
                 </textarea>

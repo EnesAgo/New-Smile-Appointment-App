@@ -6,6 +6,7 @@ import {alertError, alertSuccess} from "@/functions/alertFunctions";
 import HttpRequest from "@/requests/HttpRequest";
 import ToastContainerDefault from "@/components/toastContainer/ToastContainers";
 import EventForm from "@/components/appointments/EventForm";
+const { v4: uuidv4 } = require('uuid');
 
 export async function getServerSideProps(){
     try{
@@ -36,6 +37,7 @@ export default function Appointments({ data, error }: any) {
     const [eventFormDates, setEventFormDates] = useState<any>();
     const [isNewEventForm, setIsNewEventForm] = useState(true)
     const [selectedEvent, setSelectedEvent] = useState<any>({})
+    const [isFormOpen, setIsFormOpen] = useState(false)
     const [defaultEditFormData, setDefaultEditFormData] = useState<any>({
         title: '',
         desc: '',
@@ -104,6 +106,8 @@ export default function Appointments({ data, error }: any) {
 
     const onSelectSlot = useCallback((e: any) => {
 
+        setIsFormOpen(true);
+
         setIsNewEventForm(true);
         setEvents((prev: any) => prev.filter((e: any) => e.uuID !== 'testUUID'))
 
@@ -122,16 +126,20 @@ export default function Appointments({ data, error }: any) {
 
     const onSelectEvent = useCallback((event: any) => {
         console.log(event)
+        setIsFormOpen(true);
         setSelectedEvent(event)
         setIsNewEventForm(false);
         setEvents((prev: any) => prev.filter((e: any) => e.uuID !== 'testUUID'))
 
+        console.log(event)
+
+
         const defaultInpVals = {
             title: event.title,
-            desc: event.desc,
+            desc: event.description,
             currency: event.billType,
             bill: event.bill,
-            no: event.patientNo,
+            no: event.patientName,
         }
         setDefaultEditFormData(defaultInpVals)
         setEventFormDates({start: event.start, end: event.end});
@@ -141,6 +149,7 @@ export default function Appointments({ data, error }: any) {
 
     async function cancelEvent(){
         setEvents((prev: any) => prev.filter((e: any) => e.uuID !== 'testUUID'))
+        setIsFormOpen(false)
     }
 
     async function postNewEvent(startRef:any, endRef:any, titleRef:any, descRef:any, patientNoRef:any, billRef:any, currencyRef:any){
@@ -156,8 +165,11 @@ export default function Appointments({ data, error }: any) {
             const newBillVal = billRef.current.value;
             const newCurrencyVal = currencyRef.current.value;
 
+            console.log(newPatientNoVal)
 
-            const patient: any = await HttpRequest.get(`/findOnePatientWithNo?patientNo=${newPatientNoVal}`)
+
+
+            const patient: any = await HttpRequest.get(`/searchFullNamePatients?fullName=${newPatientNoVal}`)
 
             if(patient.error){
                 console.log(patient.error)
@@ -174,7 +186,7 @@ export default function Appointments({ data, error }: any) {
             const fullStartDate = changeDateTime(eventFormDates.start, newStartVal)
             const fullEndDate = changeDateTime(eventFormDates.end, newEndVal)
 
-            const eventObjData = {
+            const eventObjDataStart: any = {
                 title: newTitleVal,
                 start: fullStartDate,
                 end: fullEndDate,
@@ -182,37 +194,70 @@ export default function Appointments({ data, error }: any) {
                 from: workerData.uuID,
                 fromName: workerData.username,
                 color: workerData.userEventColor,
-                patient: patient.uuID,
-                patientNo: newPatientNoVal,
+                patientName: newPatientNoVal,
                 bill: newBillVal,
                 billType: newCurrencyVal,
             }
 
-            console.log(eventObjData)
+            if(patient.searchedPatients.length !== 0){
+                console.log("yes")
+                const eventObjData = {
+                    ...eventObjDataStart,
+                    patient: patient.searchedPatients[0].uuID,
+                }
 
-            const NewEvent: any = await HttpRequest.post(`/createEvent`, eventObjData)
+                console.log(eventObjData)
 
-            if(NewEvent.error){
-                console.log(NewEvent.error)
-                alertError("An Error Occurred")
-                return
+                const NewEvent: any = await HttpRequest.post(`/createEvent`, eventObjData)
+
+                if(NewEvent.error){
+                    console.log(NewEvent.error)
+                    alertError("An Error Occurred")
+                    return
+                }
+
+                setEvents(
+                    (prev: any) => [...prev, eventObjData])
+
+                alertSuccess("Event Created Successfully")
+            }
+            else{
+                console.log("no")
+                const eventObjData = {
+                    ...eventObjDataStart,
+                    patient: uuidv4(),
+                }
+
+                console.log(eventObjData)
+
+                const NewEvent: any = await HttpRequest.post(`/createEvent`, eventObjData)
+
+                if(NewEvent.error){
+                    console.log(NewEvent.error)
+                    alertError("An Error Occurred")
+                    return
+                }
+
+                setEvents(
+                    (prev: any) => [...prev, eventObjData])
+
+                alertSuccess("Event Created Successfully")
             }
 
-            setEvents(
-                (prev: any) => [...prev, eventObjData])
-
-            alertSuccess("Event Created Successfully")
 
             titleRef.current.value = '';
             descRef.current.value = '';
             patientNoRef.current.value = '';
             billRef.current.value = '';
             currencyRef.current.value = '';
+
+            setIsFormOpen(false)
             
         } catch (e) {
             console.log(e)
             alertError("An Error Occurred")
         }
+
 
     }
 
@@ -226,14 +271,18 @@ export default function Appointments({ data, error }: any) {
             const newBillVal = billRef.current.value;
             const newCurrencyVal = currencyRef.current.value;
 
+            console.log(newPatientNoVal)
 
-            const patient: any = await HttpRequest.get(`/findOnePatientWithNo?patientNo=${newPatientNoVal}`)
+
+            const patient: any = await HttpRequest.get(`/searchFullNamePatients?fullName=${newPatientNoVal}`)
 
             if(patient.error){
                 console.log(patient.error)
                 alertError("An Error Occurred")
                 return
             }
+
+
             if(!window.localStorage.jwtNewSmile){
                 alertError("An Error Occurred")
                 return
@@ -253,8 +302,7 @@ export default function Appointments({ data, error }: any) {
                 from: workerData.uuID,
                 fromName: workerData.username,
                 color: workerData.userEventColor,
-                patient: patient.uuID,
-                patientNo: newPatientNoVal,
+                patientName: newPatientNoVal,
                 bill: newBillVal,
                 billType: newCurrencyVal,
             }
@@ -265,8 +313,9 @@ export default function Appointments({ data, error }: any) {
                 alertError("An Error Occurred")
                 return
             }
-            setEvents((prev: any) => prev.filter((e: any) => e.uuID !== selectedEvent.uuID))
+            setEvents((prev: any) => prev.map((e: any) => (e.uuID === eventObjData.uuID ? eventObjData : e)))
             alertSuccess("Element Successfully Updated")
+            setIsFormOpen(false)
 
         } catch (e) {
             console.log(e)
@@ -294,9 +343,14 @@ export default function Appointments({ data, error }: any) {
 
     return (
         <>
+            {
+                isFormOpen &&
+                <div className="w-full h-full z-10 bg-gray-400 absolute opacity-[90%]"></div>
+            }
             <HeaderComp />
             <ToastContainerDefault />
             <main className="flex flex-col gap-2 gridMain items-center justify-center pt-12 pb-6">
+
                 <MyCalendar
                     calEvents={events}
                     handleNavigate={handleNavigate}
@@ -304,17 +358,20 @@ export default function Appointments({ data, error }: any) {
                     onSelectEvent={onSelectEvent}
                 />
 
-                <section className="w-[80%] h-[500px] flex flex items-center justify-between m-4 rounded-2xl">
-                    <div className="bg-[rgba(255,255,255,0.8)] w-[45%] h-full rounded-2xl">
-                        {
-                            isNewEventForm ?
-                                <EventForm dates={eventFormDates} FormTitle={"New Event"} cancelEvent={cancelEvent} submitForm={postNewEvent} /> :
-                                <EventForm dates={eventFormDates} FormTitle={"Edit Event"} cancelEvent={cancelEvent} submitForm={updateEvent} deleteEvent={deleteEvent} defaultInpVals={defaultEditFormData} isEdit={true} />
+                {
+                    isFormOpen &&
+                    <section className="w-[80%] h-[500px] flex flex items-center justify-between m-4 rounded-2xl z-20" style={{position: "absolute", left: "50%", top: "50%", transform: "translate(-25%, -50%)"}} >
+                        <div className="bg-white w-[45%] h-full rounded-2xl">
+                            {
+                                isNewEventForm ?
+                                    <EventForm dates={eventFormDates} FormTitle={"New Event"} cancelEvent={cancelEvent} submitForm={postNewEvent} /> :
+                                    <EventForm dates={eventFormDates} FormTitle={"Edit Event"} cancelEvent={cancelEvent} submitForm={updateEvent} deleteEvent={deleteEvent} defaultInpVals={defaultEditFormData} isEdit={true} />
 
-                        }
-                    </div>
-                    {/*<div className="bg-[rgba(255,255,255,0.8)] w-[45%] h-full rounded-2xl"></div>*/}
-                </section>
+                            }
+                        </div>
+                        {/*<div className="bg-[rgba(255,255,255,0.8)] w-[45%] h-full rounded-2xl"></div>*/}
+                    </section>
+                }
             </main>
         </>
     )
