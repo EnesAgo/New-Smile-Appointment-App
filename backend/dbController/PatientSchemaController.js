@@ -11,7 +11,7 @@ async function createPatient(data){
     try{
 
         const uuIDString = uuidv4();
-        const billingUUIDString = uuidv4();
+        const medUUIDString = uuidv4();
 
         const latestInserted = await PatientSchema.find({}).sort({"no": -1}).limit(1)
 
@@ -27,7 +27,8 @@ async function createPatient(data){
         const postData = {
             ...data,
             no: newNoNum,
-            uuID: uuIDString
+            uuID: uuIDString,
+            medUUID: medUUIDString
         }
 
         console.log(postData)

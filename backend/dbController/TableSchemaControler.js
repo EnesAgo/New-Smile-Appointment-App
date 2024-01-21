@@ -60,6 +60,19 @@ const PatientSchema = new mongoose.Schema({
 
     billingUUID: String,
     uuID: String,
+    medUUID: String,
+})
+
+const MedHistorySchema = new mongoose.Schema({
+    medicine: String,
+    allergies: String,
+    stableHealth: Boolean,
+    operationInFiveYears: Boolean,
+    HepatitisDisease: Boolean,
+    jaundiceDisease: Boolean,
+    hiv: Boolean,
+    pregnant: Boolean,
+    uuID: String,
 })
 
 
