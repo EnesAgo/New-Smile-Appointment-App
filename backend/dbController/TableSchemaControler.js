@@ -61,7 +61,6 @@ const PatientSchema = new mongoose.Schema({
 
     billingUUID: String,
     uuID: String,
-    medUUID: String,
 })
 
 const MedHistorySchema = new mongoose.Schema({
@@ -73,12 +72,13 @@ const MedHistorySchema = new mongoose.Schema({
     jaundiceDisease: Boolean,
     hiv: Boolean,
     pregnant: Boolean,
-    uuID: String,
+    patientUUID: String,
 })
 
 
 module.exports = {
     EventSchema: mongoose.model("Events", EventSchema),
     WorkerSchema: mongoose.model("Workers", WorkerSchema),
-    PatientSchema: mongoose.model("Patients", PatientSchema)
+    PatientSchema: mongoose.model("Patients", PatientSchema),
+    MedHistorySchema: mongoose.model("MedHistory", MedHistorySchema),
 }

@@ -31,7 +31,6 @@ async function createPatient(data){
             ...data,
             no: newNoNum,
             uuID: newUUID,
-            medUUID: medUUIDString
         }
 
         console.log(postData)

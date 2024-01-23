@@ -47,6 +47,15 @@ const {
 } = PatientFunctions;
 
 
+//MedHis Func imports
+const MedHistoryFunctions = require("./dbController/PatientSchemaController")
+const {
+    createMedHistory: createMedHistory,
+    findOneMedHistory: findOneMedHistory,
+    updateMedHistory: updateMedHistory,
+    deleteMedHistory: deleteMedHistory,
+} = MedHistoryFunctions;
+
 
 
 
@@ -564,8 +573,72 @@ app.use(express.json({limit: '10000mb'}));
 
 
 
+    //Med History
 
+    //create MedHist
+    app.post("/createMedHistory", verify, async (req, res) => {
+        const data = {
+            medicine: req.body.medicine,
+            allergies: req.body.allergies,
+            stableHealth: req.body.stableHealth,
+            operationInFiveYears: req.body.operationInFiveYears,
+            HepatitisDisease: req.body.HepatitisDisease,
+            jaundiceDisease: req.body.jaundiceDisease,
+            hiv: req.body.hiv,
+            pregnant: req.body.pregnant,
+            patientUUID: req.body.patientUUID,
+        }
 
+        const event = await createMedHistory(data)
+        res.json(event)
+    })
+
+    //get one MedHis
+    app.get("/findOneMedHistory", verify, async (req,res) => {
+
+        const UserUUID = req.query.patientUUID;
+
+        const Patient = await findOneMedHistory(UserUUID)
+
+        res.json(Patient)
+    })
+
+    //update MedHis
+    app.put("/updatePatient", verify, async (req, res) => {
+
+        const data = {
+            medicine: req.body.medicine,
+            allergies: req.body.allergies,
+            stableHealth: req.body.stableHealth,
+            operationInFiveYears: req.body.operationInFiveYears,
+            HepatitisDisease: req.body.HepatitisDisease,
+            jaundiceDisease: req.body.jaundiceDisease,
+            hiv: req.body.hiv,
+            pregnant: req.body.pregnant,
+            patientUUID: req.body.patientUUID,
+        }
+
+        const uuID = req.query.uuID
+
+        const Patient = await updateMedHistory(data, uuID)
+        res.json(Patient)
+    })
+
+    //delete MedHis
+    app.delete("/deletePatient/:uuID", verify, async (req, res) => {
+        const AdminPass =  process.env.DELETEPASS || "AdminPass"
+
+        if(req.query.pass !== AdminPass){
+            res.json({error: "Password Incorrect"}).status(401)
+            return
+        }
+        else{
+            const deleteduuID = req.params.uuID;
+            const data = await deleteMedHistory(deleteduuID);
+            res.json(data)
+        }
+
+    })
 
 
 
