@@ -13,7 +13,7 @@ export default function HeaderComp() {
 
 
     function logOut() {
-        localStorage.setItem('jwtNewSmile', '');
+        sessionStorage.setItem('jwtNewSmile', '');
         return router.replace('/')
     }
 

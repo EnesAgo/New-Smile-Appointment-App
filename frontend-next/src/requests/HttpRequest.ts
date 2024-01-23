@@ -10,8 +10,8 @@ const instance = axios.create({
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
     // Do something before request is sent
-    if (localStorage.getItem('jwtNewSmile')) {
-        const accessToken = JSON.parse(localStorage.getItem('jwtNewSmile') as string).token;
+    if (sessionStorage.getItem('jwtNewSmile')) {
+        const accessToken = JSON.parse(sessionStorage.getItem('jwtNewSmile') as string).token;
         config.headers.Authorization = `Bearer ${accessToken}`;
         console.log(config.headers)
     }

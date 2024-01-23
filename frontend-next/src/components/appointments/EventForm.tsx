@@ -2,6 +2,7 @@ import React, {useRef} from 'react'
 import moment from "moment";
 import LogButton from "@/components/Inputs/LogButton";
 import InpLg from "@/components/Inputs/LogInp";
+import {date} from "date-arithmetic";
 
 export default function EventForm(
     {
@@ -12,12 +13,11 @@ export default function EventForm(
             currency: '',
             bill: '',
             no: '',
+            phone: ''
         },
         isEdit = false,
         deleteEvent = () => {}
     }: any) {
-
-    console.log(defaultInpVals.desc)
 
     const startRef:any = useRef();
     const endRef:any = useRef();
@@ -27,6 +27,8 @@ export default function EventForm(
     const patientNoRef:any = useRef();
     const billRef:any = useRef();
     const currencyRef:any = useRef();
+    const phoneRef:any = useRef();
+    const fullDayDateVal:any = useRef();
 
 
     return (
@@ -43,6 +45,11 @@ export default function EventForm(
                     {/*<input className="mx-2 px-2 w-24 h-8 border-b-dark border-b-[2px] !bg-[rgba(255,255,255,0.5)]" type="time" ref={endRef} defaultValue={dates && Array.from(dates.end.toString().split(" "))[4]} />*/}
                     <input className="px-2 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t " type="time" ref={endRef} defaultValue={dates && Array.from(dates.end.toString().split(" "))[4]} required />
 
+                </div>
+
+                <div className="w-[80%] flex justify-between">
+                    <input className="pl-1 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t" defaultValue={dates && moment(dates.start).format("YYYY-MM-DD")} type="date" ref={fullDayDateVal} placeholder={"Title"} required />
+                    <input className="pl-1 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t" defaultValue={defaultInpVals.phone} type="text" ref={phoneRef} placeholder={"Phone"} required />
                 </div>
 
                 <div className="w-[80%] flex justify-between">
@@ -65,7 +72,7 @@ export default function EventForm(
 
                 <div className="flex gap-2 justify-center ml-2">
 
-                    <LogButton onClickFn={() => submitForm(startRef, endRef, titleRef, descRef, patientNoRef, billRef, currencyRef)} className="bg-[#4200FF] hover:bg-[#3d00e5]" buttonName={"Submit"} />
+                    <LogButton onClickFn={() => submitForm(startRef, endRef, titleRef, descRef, patientNoRef, billRef, currencyRef, phoneRef, fullDayDateVal)} className="bg-[#4200FF] hover:bg-[#3d00e5]" buttonName={"Submit"} />
 
                     {
                         isEdit &&

@@ -130,7 +130,7 @@ async function getAllWorkers(page){
     try{
 
         // define limit per page
-        const limit = 15;
+        const limit = 25;
         const offset = (page - 1) * limit;
 
 

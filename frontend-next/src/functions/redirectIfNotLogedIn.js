@@ -1,6 +1,6 @@
 const redirectIfNotLoggedIn = (router) => {
 
-    if(!localStorage.jwtNewSmile){
+    if(!sessionStorage.jwtNewSmile){
         router.replace('/')
     }
 

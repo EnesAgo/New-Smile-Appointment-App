@@ -1,16 +1,40 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import LoginForm from "@/components/Login";
 import HttpRequest from "@/requests/HttpRequest";
 import {useRouter} from "next/router";
 import {alertError} from "@/functions/alertFunctions";
 import ToastContainerDefault from "@/components/toastContainer/ToastContainers";
+import {requestBaseUrl} from "@/requests/constants";
 
-export default function Home() {
+export async function getServerSideProps(){
+    try{
+        const response: any = await fetch(`${requestBaseUrl}/getAllWorkers?page=1`)
+        const data: any = await response.json()
+
+        return {
+            props: {
+                data
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+
+        return {
+            props: {
+                data: [],
+                error: 'Failed to fetch data, ' + JSON.stringify(error),
+            },
+        };
+    }
+}
+export default function Home({ data, error }: any) {
 
     const router = useRouter()
 
+    const [userNames, setUserNames] = useState<any>([])
+
     useEffect(() => {
-        if(localStorage.jwtNewSmile){
+        if(sessionStorage.jwtNewSmile){
             router.push("/appointments")
         }
 
@@ -20,6 +44,18 @@ export default function Home() {
         document.body.classList.remove("to-[#27f8aa]");
 
         document.body.classList.add("bg-background-img-one");
+
+
+        if(error){
+            console.log(error)
+            alertError(`Error Occurred`)
+        } else if(data.dataUsers.length === 0){
+            alertError("There Are Not Any Users")
+        } else{
+            console.log(data)
+            setUserNames(data.dataUsers)
+        }
+
     }, [])
 
 
@@ -46,7 +82,7 @@ export default function Home() {
                 alertError(responseData.error)
 
             }else{
-                localStorage.setItem('jwtNewSmile', JSON.stringify(responseData))
+                sessionStorage.setItem('jwtNewSmile', JSON.stringify(responseData))
                 await router.push("/appointments")
             }
             return
@@ -63,7 +99,7 @@ export default function Home() {
   return (
       <main className="flex gridMain items-center justify-center">
           <ToastContainerDefault />
-          <LoginForm submitForm={submitLoginForm} />
+          <LoginForm submitForm={submitLoginForm} userNames={userNames} />
       </main>
   )
 }

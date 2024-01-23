@@ -10,10 +10,10 @@ function checkEventOverlap(allEvents, data){
 
     const sameEvent = allEvents.some(e => {
 
-        const dataStart = moment(moment(data.start).format("YYYY-MM-DD HH:mm:ss"), 'YYYY-MM-DD HH:mm:ss')
-        const dataEnd = moment(moment(data.end).format("YYYY-MM-DD HH:mm:ss"), 'YYYY-MM-DD HH:mm:ss')
-        const eStart = moment(moment(e.start).format("YYYY-MM-DD HH:mm:ss"), 'YYYY-MM-DD HH:mm:ss')
-        const eEnd = moment(moment(e.end).format("YYYY-MM-DD HH:mm:ss"), 'YYYY-MM-DD HH:mm:ss')
+        const dataStart = moment(moment(data.start)).format("YYYY-MM-DD HH:mm:ss");
+        const dataEnd = moment(moment(data.end)).format("YYYY-MM-DD HH:mm:ss");
+        const eStart = moment(moment(e.start)).format("YYYY-MM-DD HH:mm:ss");
+        const eEnd = moment(moment(e.end)).format("YYYY-MM-DD HH:mm:ss");
 
         // console.log(dataStart.isBetween(eStart, eEnd))
         // console.log(dataEnd.isBetween(eStart, eEnd))
@@ -174,7 +174,10 @@ async function updateEvent(data, uuID) {
 
     const prevElement = await EventSchema.findOne({uuID: uuID})
 
+    console.log(prevElement)
+
     if(
+        prevElement &&
         moment(prevElement.start).format("DD MMM YYYY hh:mm") === moment(data.start).format("DD MMM YYYY hh:mm") &&
         moment(prevElement.end).format("DD MMM YYYY hh:mm") === moment(data.end).format("DD MMM YYYY hh:mm")
     ){
@@ -188,6 +191,8 @@ async function updateEvent(data, uuID) {
     });
 
     const isOverlapping = checkEventOverlap(AllEvents, data)
+
+    console.log(isOverlapping)
 
     if(isOverlapping.error){
         return isOverlapping

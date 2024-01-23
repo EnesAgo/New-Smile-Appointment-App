@@ -169,6 +169,7 @@ app.use(express.json({limit: '10000mb'}));
             color: req.body.color || "#255984",
             patient: req.body.patient,
             patientName: req.body.patientName,
+            patientPhone: req.body.patientPhone,
             bill: req.body.bill,
             billType: req.body.billType || "Euro",
             payed: req.body.payed || false

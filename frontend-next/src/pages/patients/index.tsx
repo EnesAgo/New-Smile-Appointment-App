@@ -61,7 +61,7 @@ export default function Patients({ allPatients, activePatients, error }: any) {
             console.log(allPatients, activePatients)
 
             let dataToShowArray = allPatients.AllPatients.map((e:any) => {
-                if(JSON.parse(localStorage.jwtNewSmile).isAdmin){
+                if(JSON.parse(sessionStorage.jwtNewSmile).isAdmin){
                     return {
                         uuID: e.uuID,
                         no: String(e.no),
@@ -163,7 +163,7 @@ export default function Patients({ allPatients, activePatients, error }: any) {
             }
             else{
                 dataToShowArray = res.searchedPatients.map((e: any) => {
-                    if(JSON.parse(localStorage.jwtNewSmile).isAdmin){
+                    if(JSON.parse(sessionStorage.jwtNewSmile).isAdmin){
                         return {
                             uuID: e.uuID,
                             no: String(e.no),

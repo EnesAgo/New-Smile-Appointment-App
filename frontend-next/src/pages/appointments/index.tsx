@@ -67,6 +67,7 @@ export default function Appointments({ data, error }: any) {
             alertError("An Error Occurred")
         }
         if(data.AllEvents){
+            console.log(data.AllEvents)
             setEvents(data.AllEvents.map((obj: any) => ({
                 ...obj,
                 start: new Date(obj.start),
@@ -133,14 +134,15 @@ export default function Appointments({ data, error }: any) {
 
         console.log(event)
 
-
         const defaultInpVals = {
             title: event.title,
             desc: event.description,
             currency: event.billType,
             bill: event.bill,
             no: event.patientName,
+            phone: event.patientPhone
         }
+        console.log(defaultInpVals)
         setDefaultEditFormData(defaultInpVals)
         setEventFormDates({start: event.start, end: event.end});
 
@@ -152,7 +154,7 @@ export default function Appointments({ data, error }: any) {
         setIsFormOpen(false)
     }
 
-    async function postNewEvent(startRef:any, endRef:any, titleRef:any, descRef:any, patientNoRef:any, billRef:any, currencyRef:any){
+    async function postNewEvent(startRef:any, endRef:any, titleRef:any, descRef:any, patientNoRef:any, billRef:any, currencyRef:any, phoneRef:any, fullDayDateRef:any){
         setEvents((prev: any) => prev.filter((e: any) => e.uuID !== 'testUUID'))
 
         try{
@@ -164,8 +166,10 @@ export default function Appointments({ data, error }: any) {
             const newPatientNoVal = patientNoRef.current.value;
             const newBillVal = billRef.current.value;
             const newCurrencyVal = currencyRef.current.value;
+            const phoneVal = phoneRef.current.value;
+            const fullDayDateVal = fullDayDateRef.current.value;
 
-            console.log(newPatientNoVal)
+            console.log(fullDayDateVal)
 
 
 
@@ -176,15 +180,15 @@ export default function Appointments({ data, error }: any) {
                 alertError("An Error Occurred")
                 return
             }
-            if(!window.localStorage.jwtNewSmile){
+            if(!window.sessionStorage.jwtNewSmile){
                 alertError("An Error Occurred")
                 return
             }
 
-            const workerData = JSON.parse(window.localStorage.jwtNewSmile)
+            const workerData = JSON.parse(window.sessionStorage.jwtNewSmile)
 
-            const fullStartDate = changeDateTime(eventFormDates.start, newStartVal)
-            const fullEndDate = changeDateTime(eventFormDates.end, newEndVal)
+            const fullStartDate = changeDateTime(fullDayDateVal, newStartVal)
+            const fullEndDate = changeDateTime(fullDayDateVal, newEndVal)
 
             const eventObjDataStart: any = {
                 title: newTitleVal,
@@ -204,6 +208,7 @@ export default function Appointments({ data, error }: any) {
                 const eventObjData = {
                     ...eventObjDataStart,
                     patient: patient.searchedPatients[0].uuID,
+                    patientPhone: patient.searchedPatients[0].phone
                 }
 
                 console.log(eventObjData)
@@ -226,6 +231,7 @@ export default function Appointments({ data, error }: any) {
                 const eventObjData = {
                     ...eventObjDataStart,
                     patient: uuidv4(),
+                    patientPhone: phoneVal
                 }
 
                 console.log(eventObjData)
@@ -261,7 +267,7 @@ export default function Appointments({ data, error }: any) {
 
     }
 
-    async function updateEvent(startRef:any, endRef:any, titleRef:any, descRef:any, patientNoRef:any, billRef:any, currencyRef:any) {
+    async function updateEvent(startRef:any, endRef:any, titleRef:any, descRef:any, patientNoRef:any, billRef:any, currencyRef:any, phoneRef:any, fullDayDateRef:any) {
         try{
             const newStartVal = startRef.current.value;
             const newEndVal = endRef.current.value;
@@ -270,6 +276,8 @@ export default function Appointments({ data, error }: any) {
             const newPatientNoVal = patientNoRef.current.value;
             const newBillVal = billRef.current.value;
             const newCurrencyVal = currencyRef.current.value;
+            const phoneVal = phoneRef.current.value;
+            const fullDayDateVal = fullDayDateRef.current.value;
 
             console.log(newPatientNoVal)
 
@@ -283,26 +291,27 @@ export default function Appointments({ data, error }: any) {
             }
 
 
-            if(!window.localStorage.jwtNewSmile){
+            if(!window.sessionStorage.jwtNewSmile){
                 alertError("An Error Occurred")
                 return
             }
 
-            const workerData = JSON.parse(window.localStorage.jwtNewSmile)
+            const workerData = JSON.parse(window.sessionStorage.jwtNewSmile)
 
-            const fullStartDate = changeDateTime(eventFormDates.start, newStartVal)
-            const fullEndDate = changeDateTime(eventFormDates.end, newEndVal)
+            const fullStartDate = changeDateTime(fullDayDateVal, newStartVal)
+            const fullEndDate = changeDateTime(fullDayDateVal, newEndVal)
 
             const eventObjData = {
                 ...selectedEvent,
                 title: newTitleVal,
-                start: fullStartDate,
-                end: fullEndDate,
+                start: new Date(fullStartDate),
+                end: new Date(fullEndDate),
                 description: newDescVal,
                 from: workerData.uuID,
                 fromName: workerData.username,
                 color: workerData.userEventColor,
                 patientName: newPatientNoVal,
+                patientPhone: phoneVal,
                 bill: newBillVal,
                 billType: newCurrencyVal,
             }
@@ -334,6 +343,7 @@ export default function Appointments({ data, error }: any) {
             }
             setEvents((prev: any) => prev.filter((e: any) => e.uuID !== selectedEvent.uuID))
             alertSuccess("Element Successfully Deleted")
+            setIsFormOpen(false)
 
         } catch (e) {
             console.log(e)
@@ -369,7 +379,6 @@ export default function Appointments({ data, error }: any) {
 
                             }
                         </div>
-                        {/*<div className="bg-[rgba(255,255,255,0.8)] w-[45%] h-full rounded-2xl"></div>*/}
                     </section>
                 }
             </main>

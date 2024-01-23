@@ -18,6 +18,7 @@ const EventSchema = new mongoose.Schema({
     fromName: String,
     patient: String,
     patientName: String,
+    patientPhone: String,
     bill: Number,
     billType: String,
     payed: Boolean,

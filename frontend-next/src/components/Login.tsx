@@ -2,7 +2,7 @@ import React, {useRef} from 'react'
 import InpLg from "@/components/Inputs/LogInp";
 import LogButton from "@/components/Inputs/LogButton";
 
-export default function LoginForm({submitForm}: any) {
+export default function LoginForm({submitForm, userNames}: any) {
     const iconPrefix = '/assets/imgs/icons'
 
     const usernameRef = useRef();
@@ -16,7 +16,18 @@ export default function LoginForm({submitForm}: any) {
             </section>
             <section className="w-full h-full flex items-center justify-center">
                 <div className="flex flex-col items-center justify-center gap-10 self-center">
-                    <InpLg placeholderVal={"username"} inpType={"text"} inpRef={usernameRef} hasPic={true} imgSrc={`${iconPrefix}/userIcon.svg`} imgAlt={"userIcon"} />
+                    <InpLg className={"leading-[18px] pr-2"} dataList={"users"} placeholderVal={"username"} inpType={"text"} inpRef={usernameRef} hasPic={true} imgSrc={`${iconPrefix}/userIcon.svg`} imgAlt={"userIcon"} />
+
+                    <datalist id='users'>
+                        {
+                            userNames && userNames.map((e: any) => (
+                                <option key={e.uuID} value={e.username} />
+
+                            ))
+                        }
+
+                    </datalist>
+
                     <InpLg placeholderVal={"password"} inpType={"password"} inpRef={passwordRef} hasPic={true} imgSrc={`${iconPrefix}/lockIcon.svg`} imgAlt={"userIcon"} />
                     <LogButton onClickFn={() => submitForm(usernameRef, passwordRef)} />
                 </div>

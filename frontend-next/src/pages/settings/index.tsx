@@ -27,12 +27,12 @@ export default function Settings() {
         document.body.classList.add("from-[#00d8ee]");
         document.body.classList.add("to-[#27f8aa]");
 
-        setUserData(JSON.parse(window.localStorage.jwtNewSmile))
-        setColorVal(JSON.parse(window.localStorage.jwtNewSmile).userEventColor)
+        setUserData(JSON.parse(window.sessionStorage.jwtNewSmile))
+        setColorVal(JSON.parse(window.sessionStorage.jwtNewSmile).userEventColor)
     }, [])
 
     function logOut() {
-        localStorage.setItem('jwtNewSmile', '');
+        sessionStorage.setItem('jwtNewSmile', '');
         return router.replace('/')
     }
 
@@ -55,7 +55,7 @@ export default function Settings() {
 
             console.log(resData)
 
-            localStorage.jwt = JSON.stringify(resData)
+            sessionStorage.jwtNewSmile = JSON.stringify(resData)
             if(nNum < 3){
 
                 alertSuccess("color changed successfully")
