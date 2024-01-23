@@ -24,10 +24,13 @@ async function createPatient(data){
             newNoNum = parseInt(latestInserted[0].no) + 1
         }
 
+        const newUUID = data.uuID || uuIDString
+
+
         const postData = {
             ...data,
             no: newNoNum,
-            uuID: uuIDString,
+            uuID: newUUID,
             medUUID: medUUIDString
         }
 

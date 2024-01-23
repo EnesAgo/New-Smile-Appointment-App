@@ -123,7 +123,7 @@ export default function Patient({ data, hisData, error }: any) {
     return (
         <>
             <HeaderComp />
-            <ToastContainerDefault />
+            {/*<ToastContainerDefault />*/}
             <main className="flex flex-col gridMain items-center gap-8 py-12">
                 <EditPatientForm patientData={patientData} />
                 <PatientHistory patientHistoryData={patientHistory} totalEvents={hisData.total} fetchNewPage={fetchNewPage} patientUUID={data.uuID} />

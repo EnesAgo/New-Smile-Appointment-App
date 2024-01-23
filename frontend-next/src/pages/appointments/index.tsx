@@ -216,8 +216,10 @@ export default function Appointments({ data, error }: any) {
                 const NewEvent: any = await HttpRequest.post(`/createEvent`, eventObjData)
 
                 if(NewEvent.error){
+
                     console.log(NewEvent.error)
-                    alertError("An Error Occurred")
+                    alertError(NewEvent.error)
+                    setIsFormOpen(false)
                     return
                 }
 
@@ -228,9 +230,11 @@ export default function Appointments({ data, error }: any) {
             }
             else{
                 console.log("no")
+                const patientUUIDString = uuidv4()
+
                 const eventObjData = {
                     ...eventObjDataStart,
-                    patient: uuidv4(),
+                    patient: patientUUIDString,
                     patientPhone: phoneVal
                 }
 
@@ -240,7 +244,8 @@ export default function Appointments({ data, error }: any) {
 
                 if(NewEvent.error){
                     console.log(NewEvent.error)
-                    alertError("An Error Occurred")
+                    alertError(NewEvent.error)
+                    setIsFormOpen(false)
                     return
                 }
 
@@ -248,6 +253,32 @@ export default function Appointments({ data, error }: any) {
                     (prev: any) => [...prev, eventObjData])
 
                 alertSuccess("Event Created Successfully")
+
+                let imgUrl = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.awAiMS1BCAQ2xS2lcdXGlwHaHH%26pid%3DApi&f=1&ipt=da636c11b0380e062d4a8ab26a212d392e7cb46a8ffd5fc083dee44e68c266a4&ipo=images'
+
+
+                const newPatientData = {
+                    name: newPatientNoVal,
+                    surname: newPatientNoVal,
+                    parentName: newPatientNoVal,
+                    bornIn: "",
+                    birthPlace: "",
+                    address: "",
+
+                    email: "",
+                    phone: phoneVal,
+                    embg: "",
+
+                    patientImage: imgUrl,
+                }
+
+                try{
+                    const newPatient: any = await HttpRequest.post("/createPatient", newPatientData)
+                    console.log(newPatient)
+                }
+                catch (e){
+                    console.log(e)
+                }
             }
 
 
@@ -353,12 +384,12 @@ export default function Appointments({ data, error }: any) {
 
     return (
         <>
+            {/*<ToastContainerDefault />*/}
             {
                 isFormOpen &&
                 <div className="w-full h-full z-10 bg-gray-400 absolute opacity-[90%]"></div>
             }
             <HeaderComp />
-            <ToastContainerDefault />
             <main className="flex flex-col gap-2 gridMain items-center justify-center pt-12 pb-6">
 
                 <MyCalendar

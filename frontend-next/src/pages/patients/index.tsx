@@ -210,7 +210,7 @@ export default function Patients({ allPatients, activePatients, error }: any) {
         <>
             <HeaderComp />
             <main className="flex flex-col items-center justify-center gap-8 gridMain py-10">
-                <ToastContainerDefault />
+                {/*<ToastContainerDefault />*/}
                 <PatientHeaderSec activePatients={showActivePatients} totalPatients={allPatients.total} inactivePatients={showInActivePatients} />
                 <PatientList data={dataToShow} head={head} searchInpRef={SearchRef} searchInpTypeRef={SearchTypeRef} totalPatients={allPatients.total} onInpValChangeFunc={onInpValChangeFunc} />
             </main>

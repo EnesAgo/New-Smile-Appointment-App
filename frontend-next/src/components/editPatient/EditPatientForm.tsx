@@ -146,7 +146,7 @@ export default function EditPatientForm(Props: any) {
 
     return (
         <>
-            <ToastContainerDefault />
+            {/*<ToastContainerDefault />*/}
             <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
                 <section className="flex items-center justify-center w-full min-h-28 pt-16 pb-4">
                     <img className="w-36 rounded-full" src={patientImg} alt="patient image"/>
@@ -208,7 +208,7 @@ export default function EditPatientForm(Props: any) {
                         <label>
                             <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
                          font-Poppints">Debt</p>
-                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Debt"} inpType={"number"} inpRef={debtRef} hasPic={false} />
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl pr-3"} placeholderVal={"Debt"} inpType={"number"} inpRef={debtRef} hasPic={false} />
                         </label>
                         <label>
                             <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
@@ -221,7 +221,7 @@ export default function EditPatientForm(Props: any) {
                         <label>
                             <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
                          font-Poppints">EMBG</p>
-                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"EMBG"} inpType={"text"} inpRef={embgRef} hasPic={false} />
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl pr-3"} placeholderVal={"EMBG"} inpType={"number"} inpRef={embgRef} hasPic={false} />
                         </label>
 
                         <div>

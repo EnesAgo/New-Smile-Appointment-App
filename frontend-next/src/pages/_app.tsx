@@ -5,6 +5,7 @@ import React, {useEffect} from "react";
 import redirectIfNotLoggedIn from "@/functions/redirectIfNotLogedIn";
 
 import 'react-toastify/dist/ReactToastify.css';
+import ToastContainerDefault from "@/components/toastContainer/ToastContainers";
 
 export default function App({ Component, pageProps }: AppProps) {
   const routerNext = useRouter()
@@ -17,5 +18,12 @@ export default function App({ Component, pageProps }: AppProps) {
     redirectIfNotLoggedIn(routerNext)
   }, [])
 
-  return <Component {...pageProps} />
+  return (
+      <>
+        <Component {...pageProps} />
+        <ToastContainerDefault />
+      </>
+  )
+
+  // return <Component {...pageProps} />
 }

@@ -97,7 +97,7 @@ export default function NewPatientForm() {
 
     return (
         <>
-            <ToastContainerDefault />
+            {/*<ToastContainerDefault />*/}
             <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
                 <h1 className="pt-6">New Patient</h1>
                 <section className="flex flex-col gap-10 items-center justify-center w-full py-12">
@@ -158,7 +158,7 @@ export default function NewPatientForm() {
                         <label>
                             <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
                          font-Poppints">EMBG</p>
-                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"EMBG"} inpType={"text"} inpRef={embgRef} hasPic={false} />
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl pr-3"} placeholderVal={"EMBG"} inpType={"number"} inpRef={embgRef} hasPic={false} />
                         </label>
                         <label>
                             <p className="!text-[#666] pl-[1px] py-2 cursor-pointer

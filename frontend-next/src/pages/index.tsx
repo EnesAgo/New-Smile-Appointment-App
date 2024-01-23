@@ -98,7 +98,7 @@ export default function Home({ data, error }: any) {
 
   return (
       <main className="flex gridMain items-center justify-center">
-          <ToastContainerDefault />
+          {/*<ToastContainerDefault />*/}
           <LoginForm submitForm={submitLoginForm} userNames={userNames} />
       </main>
   )

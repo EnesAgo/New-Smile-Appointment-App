@@ -169,7 +169,7 @@ export default function Settings() {
     return (
         <>
             <HeaderComp />
-            <ToastContainerDefault />
+            {/*<ToastContainerDefault />*/}
             <main className="flex flex-col gridMain m-12 items-center justify-center gap-8">
                 <ChangePassword submitForm={submitChangePassword} />
                 <ChangeColor colorRef={colorRef} changeColor={changeColor} val={colorVal} userData={userData} />

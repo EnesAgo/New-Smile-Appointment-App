@@ -19,7 +19,7 @@ function checkEventOverlap(allEvents, data) {
             moment(eStart).isBetween(dataStart, dataEnd) ||
             moment(eEnd).isBetween(dataStart, dataEnd)
         ) {
-            return { error: "You can't create more than 2 events in one timeline" };
+            return { error: "You can't create more than 2 events in one timeline"};
         }
     }
 
@@ -47,6 +47,7 @@ async function createEvent(data){
         if(isOverlapping.error){
             return isOverlapping
         }
+
 
         const postData = {
             ...data,
