@@ -370,8 +370,8 @@ export default function Appointments({ data, error }: any) {
 
                 {
                     isFormOpen &&
-                    <section className="w-[80%] h-[500px] flex flex items-center justify-between m-4 rounded-2xl z-20" style={{position: "absolute", left: "50%", top: "50%", transform: "translate(-25%, -50%)"}} >
-                        <div className="bg-white w-[45%] h-full rounded-2xl">
+                    <section className="w-[510px] h-[500px] flex flex items-center justify-between m-4 rounded-2xl z-20 absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]" >
+                        <div className="bg-white w-full h-full rounded-2xl">
                             {
                                 isNewEventForm ?
                                     <EventForm dates={eventFormDates} FormTitle={"New Event"} cancelEvent={cancelEvent} submitForm={postNewEvent} /> :
@@ -381,6 +381,7 @@ export default function Appointments({ data, error }: any) {
                         </div>
                     </section>
                 }
+
             </main>
         </>
     )

@@ -19,8 +19,14 @@ function checkEventOverlap(allEvents, data){
         // console.log(dataEnd.isBetween(eStart, eEnd))
 
 
-        if(dataStart.isBetween(eStart, eEnd) || dataEnd.isBetween(eStart, eEnd) || eStart.isBetween(dataStart, dataEnd) || eEnd.isBetween(dataStart, dataEnd)){
+        if(
+            moment(dataStart).isBetween(eStart, eEnd) ||
+            moment(dataEnd).isBetween(eStart, eEnd) ||
+            moment(eStart).isBetween(dataStart, dataEnd) ||
+            moment(eEnd).isBetween(dataStart, dataEnd)){
 
+
+        // if(dataStart.isBetween(eStart, eEnd) || dataEnd.isBetween(eStart, eEnd) || eStart.isBetween(dataStart, dataEnd) || eEnd.isBetween(dataStart, dataEnd)){
             return {error: "You can't create more than 2 events in one timeline"}
 
         }
@@ -190,7 +196,11 @@ async function updateEvent(data, uuID) {
         start: { $gte: startDate, $lte: endDate }
     });
 
-    const isOverlapping = checkEventOverlap(AllEvents, data)
+
+    const AllEventsFilterred = AllEvents.filter((e) => (e.uuID !== uuID));
+
+
+    const isOverlapping = checkEventOverlap(AllEventsFilterred, data)
 
     console.log(isOverlapping)
 
