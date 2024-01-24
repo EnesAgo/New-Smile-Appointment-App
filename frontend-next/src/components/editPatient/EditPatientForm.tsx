@@ -15,6 +15,8 @@ export default function EditPatientForm(Props: any) {
 
     const patientData = Props.patientData
 
+    const medData = Props.medData
+
     const [patientImg, setPatientImg] = useState('')
 
     const [patientStatus, setPatientStatus] = useState(false)
@@ -32,6 +34,17 @@ export default function EditPatientForm(Props: any) {
     const embgRef = useRef<any>()
     const fileImgRef = useRef<any>()
 
+
+    const medicineRef = useRef<any>()
+    const allergiesRef = useRef<any>()
+
+    const [stableHealthVal, setStableHealthVal] = useState(false);
+    const [operationInFiveYearsVal, setOperationInFiveYearsVal] = useState(false);
+    const [HepatitisDiseaseVal, setHepatitisDiseaseVal] = useState(false);
+    const [jaundiceDiseaseVal, setJaundiceDiseaseVal] = useState(false);
+    const [hivVal, setHivVal] = useState(false);
+    const [pregnantVal, setPregnantVal] = useState(false);
+
     useEffect(() => {
         nameRef.current.value = patientData.name
         surnameRef.current.value = patientData.surname
@@ -46,12 +59,27 @@ export default function EditPatientForm(Props: any) {
         embgRef.current.value = patientData.embg
 
         setPatientStatus(patientData.status)
-
         setPatientImg(patientData.img)
+
+console.log(medData)
+
+        medicineRef.current.value = medData.medicine
+        allergiesRef.current.value = medData.allergies
+
+        setStableHealthVal(medData.stableHealth)
+        setOperationInFiveYearsVal(medData.operationInFiveYears)
+        setHepatitisDiseaseVal(medData.HepatitisDisease)
+        setJaundiceDiseaseVal(medData.jaundiceDisease)
+        setHivVal(medData.hiv)
+        setPregnantVal(medData.pregnant)
+
+
     }, [Props])
 
 
     async function submitUpdatePatient(){
+        console.log("hello")
+
         const nameVal = nameRef.current.value;
         const surnameVal = surnameRef.current.value;
         const parentVal = parentRef.current.value;
@@ -102,20 +130,27 @@ export default function EditPatientForm(Props: any) {
 
         }
 
-        const putPatient: any = await HttpRequest.put(`/updatePatient?uuID=${patientData.uuID}`, putData)
+
+        try{
+            const putPatient: any = await HttpRequest.put(`/updatePatient?uuID=${patientData.uuID}`, putData)
 
 
-        console.log(putPatient)
+            console.log(putPatient)
 
-        if(putPatient.error){
-            alertError(`error: ${putPatient.error}`)
-            console.log(putPatient.error)
+            if(putPatient.error){
+                alertError(`error: ${putPatient.error}`)
+                console.log(putPatient.error)
+            }
+            else{
+                alertSuccess("Patient Successfully Updated")
+            }
+
         }
-        else{
-            alertSuccess("Patient Successfully Updated")
+        catch (e){
+            console.log(e)
+            alertError(`An Error Occurred`)
+
         }
-
-
 
         return
     }
@@ -142,12 +177,50 @@ export default function EditPatientForm(Props: any) {
         }
     }
 
+    async function submitUpdateHistory(){
+        const patientUUIDVal = patientData.uuID
+
+        const medicineVal = medicineRef.current.value;
+        const allergiesVal = allergiesRef.current.value;
+
+        const medHisObj = {
+            medicine: medicineVal,
+            allergies: allergiesVal,
+            stableHealth: stableHealthVal,
+            operationInFiveYears: operationInFiveYearsVal,
+            HepatitisDisease: HepatitisDiseaseVal,
+            jaundiceDisease: jaundiceDiseaseVal,
+            hiv: hivVal,
+            pregnant: pregnantVal,
+            patientUUID: patientUUIDVal
+        }
+
+        try {
+            const updatedPatient:any = await HttpRequest.put(`/updatePatient?uuID=${patientData.uuID}`, medHisObj)
+            console.log(updatedPatient)
+
+            if(updatedPatient.error){
+                alertError(`error: ${updatedPatient.error}`)
+                console.log(updatedPatient.error)
+            }
+            else{
+                alertSuccess("Patient Successfully Updated")
+            }
+
+        }
+        catch (e){
+            console.log(e)
+            alertError(`An Error Occurred`)
+
+        }
+    }
 
 
     return (
         <>
             {/*<ToastContainerDefault />*/}
-            <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
+            <form onSubmit={(e:any) => {e.preventDefault(); submitUpdatePatient()}} className="w-full h-full flex items-center justify-center" >
+                <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
                 <section className="flex items-center justify-center w-full min-h-28 pt-16 pb-4">
                     <img className="w-36 rounded-full" src={patientImg} alt="patient image"/>
                 </section>
@@ -267,10 +340,254 @@ export default function EditPatientForm(Props: any) {
                         </div>
                     </section>
 
-                    <button onClick={submitUpdatePatient} className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#0072FF] hover:bg-[#0068e8] border-2 border-[#0058C6] rounded-3xl">Submit</button>
+                    <button className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#0072FF] hover:bg-[#0068e8] border-2 border-[#0058C6] rounded-3xl" type={"submit"}>Submit</button>
 
                 </section>
             </div>
+            </form>
+
+            <form onSubmit={(e:any) => {e.preventDefault(); submitUpdateHistory()}}  className="w-full h-full flex items-center justify-center" >
+                <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
+                    <h1 className="pt-6">Patient Medicine History</h1>
+                    <section className="flex flex-col gap-10 items-center justify-center w-full py-12">
+
+                        <section className="flex w-[90%] items-center justify-center gap-24">
+                            <label>
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">Medicine</p>
+                                <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Medicine"} inpType={"text"} inpRef={medicineRef} hasPic={false} isNotRequired={true} />
+                            </label>
+                            <label>
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">Allergies</p>
+                                <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Allergies"} inpType={"text"} inpRef={allergiesRef} hasPic={false} isNotRequired={true} />
+                            </label>
+                        </section>
+
+                        <section className="flex w-[90%] items-center justify-center gap-24">
+
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">StableHealth</p>
+
+
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="stableHealth"
+                                            value="true"
+                                            checked={stableHealthVal}
+                                            onChange={() => {setStableHealthVal(true)}}
+
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
+
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="stableHealth"
+                                            value="false"
+                                            checked={!stableHealthVal}
+                                            onChange={() => {setStableHealthVal(false)}}
+
+                                        />
+                                        <h3>No</h3>
+                                    </label>
+                                </div>
+
+
+                            </div>
+
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">operationInFiveYears</p>
+
+
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="operationInFiveYears"
+                                            value="true"
+                                            checked={operationInFiveYearsVal}
+                                            onChange={() => {setOperationInFiveYearsVal(true)}}
+
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
+
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="operationInFiveYears"
+                                            value="false"
+                                            checked={!operationInFiveYearsVal}
+                                            onChange={() => {setOperationInFiveYearsVal(false)}}
+
+                                        />
+                                        <h3>No</h3>
+                                    </label>
+                                </div>
+
+
+                            </div>
+
+                        </section>
+
+                        <section className="flex w-[90%] items-center justify-center gap-24">
+
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">Hepatitis Disease</p>
+
+
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="HepatitisDisease"
+                                            value="true"
+                                            checked={HepatitisDiseaseVal}
+                                            onChange={() => {setHepatitisDiseaseVal(true)}}
+
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
+
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="HepatitisDisease"
+                                            value="false"
+                                            checked={!HepatitisDiseaseVal}
+                                            onChange={() => {setHepatitisDiseaseVal(false)}}
+
+                                        />
+                                        <h3>No</h3>
+                                    </label>
+                                </div>
+
+
+                            </div>
+
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">Jaundice Disease</p>
+
+
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="jaundiceDisease"
+                                            value="true"
+                                            checked={jaundiceDiseaseVal}
+                                            onChange={() => {setJaundiceDiseaseVal(true)}}
+
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
+
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="jaundiceDisease"
+                                            value="false"
+                                            checked={!jaundiceDiseaseVal}
+                                            onChange={() => {setJaundiceDiseaseVal(false)}}
+
+                                        />
+                                        <h3>No</h3>
+                                    </label>
+                                </div>
+
+
+                            </div>
+
+                        </section>
+
+                        <section className="flex w-[90%] items-center justify-center gap-24">
+
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">HIV</p>
+
+
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="Hiv"
+                                            value="true"
+                                            checked={hivVal}
+                                            onChange={() => {setHivVal(true)}}
+
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
+
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="Hiv"
+                                            value="false"
+                                            checked={!hivVal}
+                                            onChange={() => {setHivVal(false)}}
+
+                                        />
+                                        <h3>No</h3>
+                                    </label>
+                                </div>
+
+
+                            </div>
+
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">Is Pregnant</p>
+
+
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="pregnant"
+                                            value="true"
+                                            checked={pregnantVal}
+                                            onChange={() => {setPregnantVal(true)}}
+
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
+
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="pregnant"
+                                            value="false"
+                                            checked={!pregnantVal}
+                                            onChange={() => {setPregnantVal(false)}}
+
+                                        />
+                                        <h3>No</h3>
+                                    </label>
+                                </div>
+
+
+                            </div>
+
+                        </section>
+
+                        {/*<button onClick={() => setIsPatientForm(true)} className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#ff4300] hover:bg-[#dd3b00] border-2 border-[#dd3b00] rounded-3xl">Patient Data</button>*/}
+
+
+                        <button onClick={() => submitUpdateHistory()} className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#0072FF] hover:bg-[#0068e8] border-2 border-[#0058C6] rounded-3xl">Submit</button>
+
+                    </section>
+                </div>
+            </form>
         </>
     )
 }

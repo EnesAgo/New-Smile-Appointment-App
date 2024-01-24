@@ -7,7 +7,9 @@ export interface IInpLgPropsInterface{
     imgAlt?: string,
     className?: string
     onChange?: any,
-    dataList?: any
+    dataList?: any,
+    isNotRequired?: boolean,
+    value?: any
 }
 
 export interface ISelInpProps{

@@ -48,7 +48,7 @@ const {
 
 
 //MedHis Func imports
-const MedHistoryFunctions = require("./dbController/PatientSchemaController")
+const MedHistoryFunctions = require("./dbController/MedHIstoryController")
 const {
     createMedHistory: createMedHistory,
     findOneMedHistory: findOneMedHistory,
@@ -596,7 +596,7 @@ app.use(express.json({limit: '10000mb'}));
     //get one MedHis
     app.get("/findOneMedHistory", verify, async (req,res) => {
 
-        const UserUUID = req.query.patientUUID;
+        const UserUUID = req.query.uuID;
 
         const Patient = await findOneMedHistory(UserUUID)
 

@@ -16,7 +16,7 @@ export default function NewPatient() {
     return (
         <>
             <HeaderComp />
-            <main className="flex gridMain items-center justify-center py-12">
+            <main className="flex flex-col gap-8 gridMain items-center justify-center py-12">
                 <NewPatientForm />
             </main>
         </>

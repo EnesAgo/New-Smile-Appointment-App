@@ -28,7 +28,6 @@ export default function NewPatientForm() {
     const [hivVal, setHivVal] = useState(false);
     const [pregnantVal, setPregnantVal] = useState(false);
 
-
     const [isPatientForm, setIsPatientForm] = useState(true)
 
     async function submitNewPatient(){
@@ -45,7 +44,6 @@ export default function NewPatientForm() {
 
         const medicineVal = medicineRef.current.value;
         const allergiesVal = allergiesRef.current.value;
-
 
 
         try{
@@ -122,196 +120,358 @@ export default function NewPatientForm() {
             }
 
 
-
+            nameRef.current.value = '';
+            surnameRef.current.value = '';
+            parentRef.current.value = '';
+            emailRef.current.value = '';
+            telRef.current.value = '';
+            addresRef.current.value = '';
+            birthDateRef.current.value = '';
+            birthPlaceRef.current.value = '';
+            embgRef.current.value = '';
+            fileImgRef.current.value = '';
 
         }
-        catch (e){
+        catch (e: any){
+            if(e.message){
+                alertError(e.message)
+                return
+            }
             alertError(`An Error Occurred`)
             console.log(e)
         }
-
-
-        nameRef.current.value = '';
-        surnameRef.current.value = '';
-        parentRef.current.value = '';
-        emailRef.current.value = '';
-        telRef.current.value = '';
-        addresRef.current.value = '';
-        birthDateRef.current.value = '';
-        birthPlaceRef.current.value = '';
-        embgRef.current.value = '';
-        fileImgRef.current.value = '';
 
         return
     }
 
     return (
         <>
-            {
-                isPatientForm ?
 
-                    <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
-                        <h1 className="pt-6">New Patient</h1>
-                        <section className="flex flex-col gap-10 items-center justify-center w-full py-12">
+            <form onSubmit={(e:any) => {e.preventDefault(); submitNewPatient();}} className="w-full h-full flex items-center justify-center" >
+             <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
+                <h1 className="pt-6">New Patient</h1>
+                <section className="flex flex-col gap-10 items-center justify-center w-full py-12">
 
-                            <section className="flex w-[90%] items-center justify-center gap-24">
-                                <label>
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">Medicine</p>
-                                    <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Medicine"} inpType={"text"} inpRef={medicineRef} hasPic={false} />
-                                </label>
-                                <label>
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">Allergies</p>
-                                    <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Allergies"} inpType={"text"} inpRef={allergiesRef} hasPic={false} />
-                                </label>
-                            </section>
+                    <section className="flex w-[90%] items-center justify-center gap-24">
+                        <label>
+                            <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                 font-Poppints">Name</p>
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Name"} inpType={"text"} inpRef={nameRef} hasPic={false}/>
+                        </label>
+                        <label>
+                            <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                 font-Poppints">Surname</p>
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Surname"} inpType={"text"} inpRef={surnameRef} hasPic={false}/>
+                        </label>
+                    </section>
 
-                            <section className="flex w-[90%] items-center justify-center gap-24">
+                    <section className="flex w-[90%] items-center justify-center gap-24">
+                        <label>
+                            <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                 font-Poppints">Parent Name</p>
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Parent Name"} inpType={"text"} inpRef={parentRef} hasPic={false} />
+                        </label>
+                        <label>
+                            <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                 font-Poppints">E-mail</p>
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"E-mail"} inpType={"email"} inpRef={emailRef} hasPic={false} />
+                        </label>
+                    </section>
 
-                                <div className="w-72 flex flex-col">
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">StableHealth</p>
+                    <section className="flex w-[90%] items-center justify-center gap-24">
+                        <label>
+                            <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                 font-Poppints">Address</p>
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Address"} inpType={"text"} inpRef={addresRef} hasPic={false} />
+                        </label>
+                        <label>
+                            <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                 font-Poppints">Tel Number</p>
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Tel Number"} inpType={"text"} inpRef={telRef} hasPic={false} />
+                        </label>
+                    </section>
+
+                    <section className="flex w-[90%] items-center justify-center gap-24">
+                        <label>
+                            <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                 font-Poppints">Birth Date</p>
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Birth Date"} inpType={"text"} inpRef={birthDateRef} hasPic={false} />
+                        </label>
+                        <label>
+                            <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                 font-Poppints">Birth Place</p>
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Birth Place"} inpType={"text"} inpRef={birthPlaceRef} hasPic={false} />
+                        </label>
+                    </section>
+
+                    <section className="flex w-[60%] items-center justify-center gap-24">
+                        <label>
+                            <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                 font-Poppints">EMBG</p>
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"EMBG"} inpType={"text"} inpRef={embgRef} hasPic={false} />
+                        </label>
+                        <label>
+                            <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                 font-Poppints">Photo</p>
+                            <button
+                                className="flex items-center justify-center !w-72 !h-12 !pl-3 rounded-xl bg-[#FFA500] hover:bg-[#ea9a04] border-2 border-[#B37400] text-white text-xl"
+                                onClick={() => {fileImgRef.current.click()}}
+                            >Select File</button>
+                            <input className="invisible absolute left-[-200%]" type="file" accept="image/*" name="image" ref={fileImgRef} />
+                        </label>
+                    </section>
 
 
-                                    <div className={"flex gap-8"}>
-                                        <label className="flex gap-1">
-                                            <input
-                                                type="radio"
-                                                name="stableHealth"
-                                                value="true"
-                                                onChange={() => {setStableHealthVal(true)}}
+                    {/*<button onClick={() => setIsPatientForm(false)} className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#ff4300] hover:bg-[#dd3b00] border-2 border-[#dd3b00] rounded-3xl">Med History</button>*/}
 
-                                            />
-                                            <h3>Yes</h3>
-                                        </label>
+                    <button className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#0072FF] hover:bg-[#0068e8] border-2 border-[#0058C6] rounded-3xl" type={"submit"}>Submit</button>
 
-                                        <label className="flex gap-1">
-                                            <input
-                                                type="radio"
-                                                name="stableHealth"
-                                                value="false"
-                                                checked
-                                                onChange={() => {setStableHealthVal(false)}}
+                </section>
+            </div>
+            </form>
 
-                                            />
-                                            <h3>No</h3>
-                                        </label>
-                                    </div>
+            <form onSubmit={(e:any) => {e.preventDefault(); submitNewPatient();}} className="w-full h-full flex items-center justify-center" >
+                <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
+                    <h1 className="pt-6">Patient Medicine History</h1>
+                    <section className="flex flex-col gap-10 items-center justify-center w-full py-12">
+
+                        <section className="flex w-[90%] items-center justify-center gap-24">
+                            <label>
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">Medicine</p>
+                                <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Medicine"} inpType={"text"} inpRef={medicineRef} hasPic={false} isNotRequired={true} />
+                            </label>
+                            <label>
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">Allergies</p>
+                                <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Allergies"} inpType={"text"} inpRef={allergiesRef} hasPic={false} isNotRequired={true} />
+                            </label>
+                        </section>
+
+                        <section className="flex w-[90%] items-center justify-center gap-24">
+
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">StableHealth</p>
 
 
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="stableHealth"
+                                            value="true"
+                                            checked={stableHealthVal}
+                                            onChange={() => {setStableHealthVal(true)}}
+
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
+
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="stableHealth"
+                                            value="false"
+                                            checked={!stableHealthVal}
+                                            onChange={() => {setStableHealthVal(false)}}
+
+                                        />
+                                        <h3>No</h3>
+                                    </label>
                                 </div>
 
-                                <div className="w-72 flex flex-col">
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">operationInFiveYears</p>
+
+                            </div>
+
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">operationInFiveYears</p>
 
 
-                                    <div className={"flex gap-8"}>
-                                        <label className="flex gap-1">
-                                            <input
-                                                type="radio"
-                                                name="operationInFiveYears"
-                                                value="true"
-                                                onChange={() => {setOperationInFiveYearsVal(true)}}
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="operationInFiveYears"
+                                            value="true"
+                                            checked={operationInFiveYearsVal}
+                                            onChange={() => {setOperationInFiveYearsVal(true)}}
 
-                                            />
-                                            <h3>Yes</h3>
-                                        </label>
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
 
-                                        <label className="flex gap-1">
-                                            <input
-                                                type="radio"
-                                                name="operationInFiveYears"
-                                                value="false"
-                                                checked
-                                                onChange={() => {setOperationInFiveYearsVal(false)}}
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="operationInFiveYears"
+                                            value="false"
+                                            checked={!operationInFiveYearsVal}
+                                            onChange={() => {setOperationInFiveYearsVal(false)}}
 
-                                            />
-                                            <h3>No</h3>
-                                        </label>
-                                    </div>
-
-
+                                        />
+                                        <h3>No</h3>
+                                    </label>
                                 </div>
 
-                            </section>
 
-
-
-                            <button onClick={() => setIsPatientForm(false)} className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#ff4300] hover:bg-[#dd3b00] border-2 border-[#dd3b00] rounded-3xl">Med History</button>
-
-
-                            <button onClick={() => submitNewPatient()} className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#0072FF] hover:bg-[#0068e8] border-2 border-[#0058C6] rounded-3xl">Submit</button>
+                            </div>
 
                         </section>
-                    </div> :
 
-                    <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
-                        <h1 className="pt-6">New Patient</h1>
-                        <section className="flex flex-col gap-10 items-center justify-center w-full py-12">
+                        <section className="flex w-[90%] items-center justify-center gap-24">
 
-                            <section className="flex w-[90%] items-center justify-center gap-24">
-                                <label>
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">Name</p>
-                                    <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Name"} inpType={"text"} inpRef={nameRef} hasPic={false} />
-                                </label>
-                                <label>
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">Surname</p>
-                                    <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Surname"} inpType={"text"} inpRef={surnameRef} hasPic={false} />
-                                </label>
-                            </section>
-
-                            <section className="flex w-[90%] items-center justify-center gap-24">
-                                <label>
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">Parent Name</p>
-                                    <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Parent Name"} inpType={"text"} inpRef={parentRef} hasPic={false} />
-                                </label>
-                                <label>
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">E-mail</p>
-                                    <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"E-mail"} inpType={"email"} inpRef={emailRef} hasPic={false} />
-                                </label>
-                            </section>
-
-                            <section className="flex w-[90%] items-center justify-center gap-24">
-                                <label>
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">Address</p>
-                                    <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Address"} inpType={"text"} inpRef={addresRef} hasPic={false} />
-                                </label>
-                                <label>
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">Tel Number</p>
-                                    <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Tel Number"} inpType={"text"} inpRef={telRef} hasPic={false} />
-                                </label>
-                            </section>
-
-                            <section className="flex w-[90%] items-center justify-center gap-24">
-                                <label>
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">Birth Date</p>
-                                    <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Birth Date"} inpType={"text"} inpRef={birthDateRef} hasPic={false} />
-                                </label>
-                                <label>
-                                    <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
-                         font-Poppints">Birth Place</p>
-                                    <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Birth Place"} inpType={"text"} inpRef={birthPlaceRef} hasPic={false} />
-                                </label>
-                            </section>
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">Hepatitis Disease</p>
 
 
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="HepatitisDisease"
+                                            value="true"
+                                            checked={HepatitisDiseaseVal}
+                                            onChange={() => {setHepatitisDiseaseVal(true)}}
 
-                            <button onClick={() => setIsPatientForm(true)} className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#ff4300] hover:bg-[#dd3b00] border-2 border-[#dd3b00] rounded-3xl">Med History</button>
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
 
-                            <button onClick={() => submitNewPatient()} className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#0072FF] hover:bg-[#0068e8] border-2 border-[#0058C6] rounded-3xl">Submit</button>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="HepatitisDisease"
+                                            value="false"
+                                            checked={!HepatitisDiseaseVal}
+                                            onChange={() => {setHepatitisDiseaseVal(false)}}
+
+                                        />
+                                        <h3>No</h3>
+                                    </label>
+                                </div>
+
+
+                            </div>
+
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">Jaundice Disease</p>
+
+
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="jaundiceDisease"
+                                            value="true"
+                                            checked={jaundiceDiseaseVal}
+                                            onChange={() => {setJaundiceDiseaseVal(true)}}
+
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
+
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="jaundiceDisease"
+                                            value="false"
+                                            checked={!jaundiceDiseaseVal}
+                                            onChange={() => {setJaundiceDiseaseVal(false)}}
+
+                                        />
+                                        <h3>No</h3>
+                                    </label>
+                                </div>
+
+
+                            </div>
 
                         </section>
-                    </div>
-            }
+
+                        <section className="flex w-[90%] items-center justify-center gap-24">
+
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">HIV</p>
+
+
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="Hiv"
+                                            value="true"
+                                            checked={hivVal}
+                                            onChange={() => {setHivVal(true)}}
+
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
+
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="Hiv"
+                                            value="false"
+                                            checked={!hivVal}
+                                            onChange={() => {setHivVal(false)}}
+
+                                        />
+                                        <h3>No</h3>
+                                    </label>
+                                </div>
+
+
+                            </div>
+
+                            <div className="w-72 flex flex-col">
+                                <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
+                     font-Poppints">Is Pregnant</p>
+
+
+                                <div className={"flex gap-8"}>
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="pregnant"
+                                            value="true"
+                                            checked={pregnantVal}
+                                            onChange={() => {setPregnantVal(true)}}
+
+                                        />
+                                        <h3>Yes</h3>
+                                    </label>
+
+                                    <label className="flex gap-1">
+                                        <input
+                                            type="radio"
+                                            name="pregnant"
+                                            value="false"
+                                            checked={!pregnantVal}
+                                            onChange={() => {setPregnantVal(false)}}
+
+                                        />
+                                        <h3>No</h3>
+                                    </label>
+                                </div>
+
+
+                            </div>
+
+                        </section>
+
+                        {/*<button onClick={() => setIsPatientForm(true)} className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#ff4300] hover:bg-[#dd3b00] border-2 border-[#dd3b00] rounded-3xl">Patient Data</button>*/}
+
+
+                        <button className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#0072FF] hover:bg-[#0068e8] border-2 border-[#0058C6] rounded-3xl" type={"submit"}>Submit</button>
+
+                    </section>
+                </div>
+            </form>
         </>
     )
 }

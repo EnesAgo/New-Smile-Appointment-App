@@ -2,7 +2,8 @@ import React from 'react'
 import {IInpLgPropsInterface} from "@/@types/interfaces";
 
 export default function InpLg(Props: IInpLgPropsInterface) {
-    const {placeholderVal, inpType, inpRef, hasPic, imgSrc, imgAlt, className, onChange, dataList} = Props
+    const {placeholderVal, inpType, value, inpRef, hasPic, imgSrc, imgAlt, className, onChange, dataList, isNotRequired} = Props
+
     return (
         <label className="relative flex">
             {
@@ -12,9 +13,9 @@ export default function InpLg(Props: IInpLgPropsInterface) {
             {
                 onChange ?
 
-                <input list={dataList && dataList} type={inpType} ref={inpRef} className={`pl-12 w-80 h-10 bg-white rounded-lg ${className && className}`} placeholder={placeholderVal} onChange={onChange} required />:
+                <input value={value && value} list={dataList && dataList} type={inpType} ref={inpRef} className={`pl-12 w-80 h-10 bg-white rounded-lg ${className && className}`} placeholder={placeholderVal} onChange={onChange} required={!isNotRequired} />:
 
-                <input list={dataList && dataList} type={inpType} ref={inpRef} className={`pl-12 w-80 h-10 bg-white rounded-lg ${className && className}`} placeholder={placeholderVal} required />
+                <input value={value && value} list={dataList && dataList} type={inpType} ref={inpRef} className={`pl-12 w-80 h-10 bg-white rounded-lg ${className && className}`} placeholder={placeholderVal} required={!isNotRequired} />
 
             }
         </label>
