@@ -40,7 +40,7 @@ export default function EventForm(
 
                 <div className="flex w-[80%] justify-between">
                     {/*<input className="mx-2 px-2 w-24 h-8 border-b-dark border-b-[2px] !bg-[rgba(255,255,255,0.5)]" type="time" ref={startRef} value={dates && Array.from(dates.start.toString().split(" "))[4]} />*/}
-                    <input className="px-2 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t" type="time" ref={startRef} defaultValue={dates && Array.from(dates.start.toString().split(" "))[4]} required />
+                    <input className="px-2 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t" type="time" ref={startRef} defaultValue={dates && Array.from(dates.start.toString().split(" "))[4]} required id={"eventForm"} />
                     <p className="font-Poppints font-extrabold">-</p>
                     {/*<input className="mx-2 px-2 w-24 h-8 border-b-dark border-b-[2px] !bg-[rgba(255,255,255,0.5)]" type="time" ref={endRef} defaultValue={dates && Array.from(dates.end.toString().split(" "))[4]} />*/}
                     <input className="px-2 w-[45%] h-8 border-b-dark border-b-[2px] !bg-[#f2f2f2] rounded-t " type="time" ref={endRef} defaultValue={dates && Array.from(dates.end.toString().split(" "))[4]} required />

@@ -46,6 +46,15 @@ export default function Appointments({ data, error }: any) {
         no: '',
     })
 
+    useEffect(() => {
+
+        if(isFormOpen){
+            console.log(document.getElementById("eventForm"))
+            document.getElementById("eventForm")?.focus()
+        }
+
+    }, [isFormOpen])
+
     function changeDateTime(date: any, time: any) {
         const newDate: any = new Date(date)
         const timeArr: any = Array.from(time.toString().split(":"))
@@ -78,10 +87,6 @@ export default function Appointments({ data, error }: any) {
 
     }, [])
 
-    useEffect(() => {
-
-    }, [])
-
     const handleNavigate = async (newDate:any) => {
         setCurrentDate(newDate);
 
@@ -110,6 +115,7 @@ export default function Appointments({ data, error }: any) {
         setIsFormOpen(true);
 
         setIsNewEventForm(true);
+
         setEvents((prev: any) => prev.filter((e: any) => e.uuID !== 'testUUID'))
 
         setEventFormDates({start: e.start, end: e.end});
