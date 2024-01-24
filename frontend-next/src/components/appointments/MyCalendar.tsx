@@ -8,7 +8,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 const localizer = momentLocalizer(moment)
 
 
-export default function MyCalendar({calEvents, handleNavigate, onSelectSlot, onSelectEvent}:any) {
+export default function MyCalendar({calEvents, handleNavigate, onSelectSlot, onSelectEvent, scrollToTime}:any) {
 
     const dayPropGetter = useCallback(
         (date:any) => ({
@@ -33,7 +33,7 @@ export default function MyCalendar({calEvents, handleNavigate, onSelectSlot, onS
     )
 
     return (
-        <div className="bg-[rgba(255,255,255,0.8)] w-[80%] h-[550px] flex items-center justify-center p-4 rounded-2xl">
+        <div className="bg-[rgba(255,255,255,0.8)] w-[97%] h-[100%] flex items-center justify-center p-4 rounded-2xl">
             <Calendar
                 localizer={localizer}
                 events={calEvents}
@@ -58,6 +58,7 @@ export default function MyCalendar({calEvents, handleNavigate, onSelectSlot, onS
                 }}
                 defaultView={"week"}
                 onNavigate={handleNavigate}
+                scrollToTime={scrollToTime}
                 style={{ height: 500, width: "100%" }}
             />
         </div>

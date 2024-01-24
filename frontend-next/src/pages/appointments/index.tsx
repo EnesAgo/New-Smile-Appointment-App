@@ -390,13 +390,14 @@ export default function Appointments({ data, error }: any) {
                 <div className="w-full h-full z-10 bg-gray-400 absolute opacity-[90%]"></div>
             }
             <HeaderComp />
-            <main className="flex flex-col gap-2 gridMain items-center justify-center pt-12 pb-6">
+            <main className="flex flex-col gap-2 gridMain items-center justify-center pt-6 pb-6">
 
                 <MyCalendar
                     calEvents={events}
                     handleNavigate={handleNavigate}
                     onSelectSlot={onSelectSlot}
                     onSelectEvent={onSelectEvent}
+                    scrollToTime={currentDate.setHours(7, 0, 0)}
                 />
 
                 {
