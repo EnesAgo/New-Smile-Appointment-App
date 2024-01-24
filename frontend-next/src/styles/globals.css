@@ -9,21 +9,35 @@ html, body, #__next {
 }
 
 #__next {
+  /*display: grid;*/
+  /*grid-template-areas:*/
+  /*  "header-menu"*/
+  /*  "main";*/
+
+  /*grid-template-columns: 1fr;*/
+  /*grid-template-rows: auto 1fr;*/
+
   display: grid;
   grid-template-areas:
-    "header-menu"
-    "main";
+    "header-menu main";
 
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr;
 }
 .gridHeader{
-  grid-area: header-menu;
+grid-area: header-menu;
 }
 .gridMain{
-  grid-area: main;
+grid-area: main;
 }
 
+.headerVert{
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  height: 100vh;
+}
 
 /*select*/
 select {

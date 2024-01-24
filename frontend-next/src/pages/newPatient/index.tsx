@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import HeaderComp from "@/components/Header";
 import NewPatientForm from "@/components/newPatient/NewPatientForm";
+import HeaderVertComp from "@/components/HeaderVertical";
 
 export default function NewPatient() {
     useEffect(() => {
@@ -15,7 +16,8 @@ export default function NewPatient() {
     }, [])
     return (
         <>
-            <HeaderComp />
+            {/*<HeaderComp />*/}
+            <HeaderVertComp />
             <main className="flex flex-col gap-8 gridMain items-center justify-center py-12">
                 <NewPatientForm />
             </main>

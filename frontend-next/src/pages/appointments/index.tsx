@@ -6,6 +6,7 @@ import {alertError, alertSuccess} from "@/functions/alertFunctions";
 import HttpRequest from "@/requests/HttpRequest";
 import ToastContainerDefault from "@/components/toastContainer/ToastContainers";
 import EventForm from "@/components/appointments/EventForm";
+import HeaderVertComp from "@/components/HeaderVertical";
 const { v4: uuidv4 } = require('uuid');
 
 export async function getServerSideProps(){
@@ -395,7 +396,10 @@ export default function Appointments({ data, error }: any) {
                 isFormOpen &&
                 <div className="w-full h-full z-10 bg-gray-400 absolute opacity-[90%]"></div>
             }
-            <HeaderComp />
+
+            {/*<HeaderComp />*/}
+            <HeaderVertComp />
+
             <main className="flex flex-col gap-2 gridMain items-center justify-center pt-6 pb-6">
 
                 <MyCalendar

@@ -6,6 +6,7 @@ import HttpRequest from "@/requests/HttpRequest";
 import {requestBaseUrl} from "@/requests/constants";
 import {alertError} from "@/functions/alertFunctions";
 import ToastContainerDefault from "@/components/toastContainer/ToastContainers";
+import HeaderVertComp from "@/components/HeaderVertical";
 
 export async function getServerSideProps(){
     try{
@@ -208,7 +209,8 @@ export default function Patients({ allPatients, activePatients, error }: any) {
     return (
 
         <>
-            <HeaderComp />
+            {/*<HeaderComp />*/}
+            <HeaderVertComp />
             <main className="flex flex-col items-center justify-center gap-8 gridMain py-10">
                 {/*<ToastContainerDefault />*/}
                 <PatientHeaderSec activePatients={showActivePatients} totalPatients={allPatients.total} inactivePatients={showInActivePatients} />

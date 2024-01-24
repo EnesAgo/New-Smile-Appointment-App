@@ -7,6 +7,7 @@ import {alertError} from "@/functions/alertFunctions";
 import {useRouter} from "next/router";
 import ToastContainerDefault from "@/components/toastContainer/ToastContainers";
 import HttpRequest from "@/requests/HttpRequest";
+import HeaderVertComp from "@/components/HeaderVertical";
 
 export async function getServerSideProps({ params }: any){
     try{
@@ -143,7 +144,9 @@ export default function Patient({ data, medData, hisData, error }: any) {
 
     return (
         <>
-            <HeaderComp />
+            {/*<HeaderComp />*/}
+            <HeaderVertComp />
+
             {/*<ToastContainerDefault />*/}
             <main className="flex flex-col gridMain items-center gap-8 py-12">
                 <EditPatientForm patientData={patientData} medData={MedHisData} />

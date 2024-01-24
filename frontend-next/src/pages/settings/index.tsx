@@ -7,6 +7,7 @@ import ChangePassword from "@/components/settings/ChangePassword";
 import {useRouter} from "next/router";
 import ChangeColor from "@/components/settings/ChangeColor";
 import NewWorker from "@/components/settings/NewWorker";
+import HeaderVertComp from "@/components/HeaderVertical";
 
 export default function Settings() {
 
@@ -168,9 +169,11 @@ export default function Settings() {
 
     return (
         <>
-            <HeaderComp />
+            {/*<HeaderComp />*/}
+            <HeaderVertComp />
+
             {/*<ToastContainerDefault />*/}
-            <main className="flex flex-col gridMain m-12 items-center justify-center gap-8">
+            <main className="flex flex-col gridMain items-center justify-center gap-8 py-12 h-full">
                 <ChangePassword submitForm={submitChangePassword} />
                 <ChangeColor colorRef={colorRef} changeColor={changeColor} val={colorVal} userData={userData} />
                 {
