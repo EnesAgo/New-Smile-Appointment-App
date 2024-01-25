@@ -502,8 +502,10 @@ app.use(express.json({limit: '10000mb'}));
 
         console.log(req.query)
 
-        // const data = await searchPatients({no: parseInt(req.query.no)}, page, limit)
-        res.json(parseInt(req.query.no))
+        const data = await searchPatients({no: parseInt(req.query.no)}, page, limit)
+        res.json(data)
+
+        // res.json(parseInt(req.query.no))
     })
 
 

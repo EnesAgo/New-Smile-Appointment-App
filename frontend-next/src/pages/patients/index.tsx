@@ -123,6 +123,8 @@ export default function Patients({ allPatients, activePatients, error }: any) {
             let res: any;
             let dataToShowArray: any;
 
+            console.log(queryType)
+
             if(queryType == 'fullName'){
 
 
@@ -133,7 +135,12 @@ export default function Patients({ allPatients, activePatients, error }: any) {
 
             } else if(queryType == 'no'){
 
-                res = await getSearchPatient(`/searchNoPatients?no=${query}&page=${pageNum}`)
+                if(query === ''){
+                    res = await getSearchPatient(`/searchFullNamePatients?fullName=${query}&page=${pageNum}`)
+                }
+                else{
+                    res = await getSearchPatient(`/searchNoPatients?no=${query}&page=${pageNum}`)
+                }
 
 
             } else if(queryType == 'phone'){
@@ -141,7 +148,7 @@ export default function Patients({ allPatients, activePatients, error }: any) {
                 res = await getSearchPatient(`/searchPhonePatients?phone=${query}&page=${pageNum}`)
 
 
-            } if(queryType == 'active'){
+            } else if(queryType == 'active'){
 
                 res = await getSearchPatient(`/searchActivePatients?page=${pageNum}`)
 
@@ -157,6 +164,12 @@ export default function Patients({ allPatients, activePatients, error }: any) {
             }
 
             console.log(res)
+
+            if(res.error){
+                console.log(res.error)
+                alertError("There Are Not Any Patients")
+                return
+            }
 
 
             if(res.searchedPatients.length == 0){
