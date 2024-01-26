@@ -176,9 +176,6 @@ export default function Appointments({ data, error }: any) {
             const phoneVal = phoneRef.current.value;
             const fullDayDateVal = fullDayDateRef.current.value;
 
-            console.log(fullDayDateVal)
-
-
 
             const patient: any = await HttpRequest.get(`/searchFullNamePatients?fullName=${newPatientNoVal}`)
 
@@ -275,6 +272,7 @@ export default function Appointments({ data, error }: any) {
                     email: "",
                     phone: phoneVal,
                     embg: "",
+                    uuID: NewEvent.patient,
 
                     patientImage: imgUrl,
                 }
@@ -285,6 +283,30 @@ export default function Appointments({ data, error }: any) {
                 }
                 catch (e){
                     console.log(e)
+                }
+
+
+                const medHisObj = {
+                    medicine: "",
+                    allergies: "allergiesVal",
+                    stableHealth: true,
+                    operationInFiveYears: false,
+                    HepatitisDisease: false,
+                    jaundiceDisease: false,
+                    hiv: false,
+                    pregnant: false,
+                    patientUUID: NewEvent.patient,
+                }
+
+                try{
+                    const postMedHis:any = await HttpRequest.post("/createMedHistory", medHisObj)
+                    console.log(postMedHis)
+
+                }
+                catch (e) {
+                    alertError(`An Error Occurred`)
+                    console.log(e)
+                    return
                 }
             }
 
@@ -316,8 +338,6 @@ export default function Appointments({ data, error }: any) {
             const newCurrencyVal = currencyRef.current.value;
             const phoneVal = phoneRef.current.value;
             const fullDayDateVal = fullDayDateRef.current.value;
-
-            console.log(newPatientNoVal)
 
 
             const patient: any = await HttpRequest.get(`/searchFullNamePatients?fullName=${newPatientNoVal}`)

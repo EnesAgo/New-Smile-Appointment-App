@@ -101,7 +101,6 @@ export default function NewPatientForm() {
                     hiv: hivVal,
                     pregnant: pregnantVal,
                     patientUUID: patientUUIDVal,
-
                 }
 
                 try{
@@ -208,7 +207,7 @@ export default function NewPatientForm() {
                         <label>
                             <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
                  font-Poppints">EMBG</p>
-                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"EMBG"} inpType={"text"} inpRef={embgRef} hasPic={false} />
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl pr-2"} placeholderVal={"EMBG"} inpType={"number"} inpRef={embgRef} hasPic={false} />
                         </label>
                         <label>
                             <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
@@ -239,12 +238,12 @@ export default function NewPatientForm() {
                             <label>
                                 <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
                      font-Poppints">Medicine</p>
-                                <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Medicine"} inpType={"text"} inpRef={medicineRef} hasPic={false} isNotRequired={true} />
+                                <InpLg className={"text-red-600 text-bo border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Medicine"} inpType={"text"} inpRef={medicineRef} hasPic={false} isNotRequired={true} />
                             </label>
                             <label>
                                 <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
                      font-Poppints">Allergies</p>
-                                <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Allergies"} inpType={"text"} inpRef={allergiesRef} hasPic={false} isNotRequired={true} />
+                                <InpLg className={"text-red-600 border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Allergies"} inpType={"text"} inpRef={allergiesRef} hasPic={false} isNotRequired={true} />
                             </label>
                         </section>
 
@@ -271,6 +270,7 @@ export default function NewPatientForm() {
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="stableHealth"
                                             value="false"
                                             checked={!stableHealthVal}
@@ -293,6 +293,7 @@ export default function NewPatientForm() {
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="operationInFiveYears"
                                             value="true"
                                             checked={operationInFiveYearsVal}
@@ -331,6 +332,7 @@ export default function NewPatientForm() {
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="HepatitisDisease"
                                             value="true"
                                             checked={HepatitisDiseaseVal}
@@ -365,6 +367,7 @@ export default function NewPatientForm() {
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="jaundiceDisease"
                                             value="true"
                                             checked={jaundiceDiseaseVal}
@@ -403,6 +406,7 @@ export default function NewPatientForm() {
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="Hiv"
                                             value="true"
                                             checked={hivVal}
@@ -437,6 +441,7 @@ export default function NewPatientForm() {
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="pregnant"
                                             value="true"
                                             checked={pregnantVal}

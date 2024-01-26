@@ -47,3 +47,7 @@ select {
   background: #f3f3f3 url("../../public/assets/imgs/icons/down-arrow-select.jpeg") no-repeat 110% 50%;
   background-size: 60px;
 }
+
+/*input[type="radio"]:checked {*/
+/*  accent-color: red;*/
+/*}*/

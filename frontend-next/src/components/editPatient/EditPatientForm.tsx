@@ -195,8 +195,10 @@ console.log(medData)
             patientUUID: patientUUIDVal
         }
 
+        console.log(medHisObj)
+
         try {
-            const updatedPatient:any = await HttpRequest.put(`/updatePatient?uuID=${patientData.uuID}`, medHisObj)
+            const updatedPatient:any = await HttpRequest.put(`/updateMedHistory?uuID=${patientData.uuID}`, medHisObj)
             console.log(updatedPatient)
 
             if(updatedPatient.error){
@@ -204,7 +206,7 @@ console.log(medData)
                 console.log(updatedPatient.error)
             }
             else{
-                alertSuccess("Patient Successfully Updated")
+                alertSuccess("Med History Successfully Updated")
             }
 
         }
@@ -355,12 +357,12 @@ console.log(medData)
                             <label>
                                 <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
                      font-Poppints">Medicine</p>
-                                <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Medicine"} inpType={"text"} inpRef={medicineRef} hasPic={false} isNotRequired={true} />
+                                <InpLg className={"text-red-600 border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Medicine"} inpType={"text"} inpRef={medicineRef} hasPic={false} isNotRequired={true} />
                             </label>
                             <label>
                                 <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
                      font-Poppints">Allergies</p>
-                                <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Allergies"} inpType={"text"} inpRef={allergiesRef} hasPic={false} isNotRequired={true} />
+                                <InpLg className={"text-red-600 border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"Allergies"} inpType={"text"} inpRef={allergiesRef} hasPic={false} isNotRequired={true} />
                             </label>
                         </section>
 
@@ -387,6 +389,7 @@ console.log(medData)
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="stableHealth"
                                             value="false"
                                             checked={!stableHealthVal}
@@ -409,6 +412,7 @@ console.log(medData)
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="operationInFiveYears"
                                             value="true"
                                             checked={operationInFiveYearsVal}
@@ -447,6 +451,7 @@ console.log(medData)
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="HepatitisDisease"
                                             value="true"
                                             checked={HepatitisDiseaseVal}
@@ -481,6 +486,7 @@ console.log(medData)
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="jaundiceDisease"
                                             value="true"
                                             checked={jaundiceDiseaseVal}
@@ -519,6 +525,7 @@ console.log(medData)
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="Hiv"
                                             value="true"
                                             checked={hivVal}
@@ -553,6 +560,7 @@ console.log(medData)
                                     <label className="flex gap-1">
                                         <input
                                             type="radio"
+                                            className={"accent-[red]"}
                                             name="pregnant"
                                             value="true"
                                             checked={pregnantVal}
@@ -583,7 +591,7 @@ console.log(medData)
                         {/*<button onClick={() => setIsPatientForm(true)} className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#ff4300] hover:bg-[#dd3b00] border-2 border-[#dd3b00] rounded-3xl">Patient Data</button>*/}
 
 
-                        <button onClick={() => submitUpdateHistory()} className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#0072FF] hover:bg-[#0068e8] border-2 border-[#0058C6] rounded-3xl">Submit</button>
+                        <button className="flex items-center justify-center w-[58%] h-14 text-white text-2xl font-Poppints bg-[#0072FF] hover:bg-[#0068e8] border-2 border-[#0058C6] rounded-3xl">Submit</button>
 
                     </section>
                 </div>

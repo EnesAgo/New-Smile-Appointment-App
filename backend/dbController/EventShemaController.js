@@ -29,7 +29,7 @@ function checkEventOverlap(allEvents, data) {
 async function createEvent(data){
     try{
 
-        const uuIDString = uuidv4();
+        const uuIDString = data.uuID || uuidv4();
 
         const startDate = moment(data.start).subtract(14, 'days').startOf("day").format('YYYY-MM-DD[T00:00:00.000Z]')
         const endDate = moment(data.end).add(14, 'days').endOf('day').format('YYYY-MM-DD[T00:00:00.000Z]')

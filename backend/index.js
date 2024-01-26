@@ -181,7 +181,8 @@ app.use(express.json({limit: '10000mb'}));
             patientPhone: req.body.patientPhone,
             bill: req.body.bill,
             billType: req.body.billType || "Euro",
-            payed: req.body.payed || false
+            payed: req.body.payed || false,
+            uuID: req.body.uuID || false
         }
 
         const event = await createEvent(data)
@@ -336,6 +337,8 @@ app.use(express.json({limit: '10000mb'}));
             debt: 0,
             debtCurrencyType: "Euro",
             status: false,
+
+            uuID: req.body.uuID || false,
 
             patientImage: req.body.patientImage,
         }
@@ -606,7 +609,7 @@ app.use(express.json({limit: '10000mb'}));
     })
 
     //update MedHis
-    app.put("/updatePatient", verify, async (req, res) => {
+    app.put("/updateMedHistory", verify, async (req, res) => {
 
         const data = {
             medicine: req.body.medicine,

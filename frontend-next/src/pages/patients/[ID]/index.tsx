@@ -3,11 +3,13 @@ import HeaderComp from "@/components/Header";
 import EditPatientForm from "@/components/editPatient/EditPatientForm";
 import PatientHistory from "@/components/editPatient/PatientHistory";
 import {requestBaseUrl} from "@/requests/constants";
-import {alertError} from "@/functions/alertFunctions";
+import {alertError, alertSuccess} from "@/functions/alertFunctions";
 import {useRouter} from "next/router";
 import ToastContainerDefault from "@/components/toastContainer/ToastContainers";
 import HttpRequest from "@/requests/HttpRequest";
 import HeaderVertComp from "@/components/HeaderVertical";
+import EventForm from "@/components/appointments/EventForm";
+import PatientNewEventForm from "@/components/patients/PatientNewEventForm";
 
 export async function getServerSideProps({ params }: any){
     try{
@@ -46,6 +48,14 @@ export default function Patient({ data, medData, hisData, error }: any) {
 
     const router = useRouter()
 
+    function changeDateTime(date: any, time: any) {
+        const newDate: any = new Date(date)
+        const timeArr: any = Array.from(time.toString().split(":"))
+        newDate.setHours(timeArr[0])
+        newDate.setMinutes(timeArr[1])
+        return newDate;
+    }
+
     const [patientData, setPatientData] = useState<any>({
         name: "",
         surname: "",
@@ -76,17 +86,9 @@ export default function Patient({ data, medData, hisData, error }: any) {
 
     })
 
-    const [patientHistory, setPatientHistory] = useState<any>([{
-        uuID: "test",
-        title: "test",
-        start: "test",
-        end: "test",
-        description: "test",
-        from: "test",
-        patient: "test",
-        bill: "test",
-        color: "test",
-    }])
+    const [patientHistory, setPatientHistory] = useState<any>([])
+    const [isFormOpen, setIsFormOpen] = useState(false)
+
 
     useEffect(() => {
         document.body.classList.remove("bg-background-img-one");
@@ -141,16 +143,101 @@ export default function Patient({ data, medData, hisData, error }: any) {
 
     }
 
+    async function cancelEvent(){
+        setIsFormOpen(false)
+    }
+
+    async function postNewEvent(startRef:any, endRef:any, titleRef:any, descRef:any, billRef:any, currencyRef:any, fullDayDateRef:any){
+        try{
+
+            const newStartVal = startRef.current.value;
+            const newEndVal = endRef.current.value;
+            const newTitleVal = titleRef.current.value;
+            const newDescVal = descRef.current.value;
+            const newBillVal = billRef.current.value;
+            const newCurrencyVal = currencyRef.current.value;
+            const fullDayDateVal = fullDayDateRef.current.value;
+
+            if(!window.sessionStorage.jwtNewSmile){
+                alertError("An Error Occurred")
+                return
+            }
+
+            const workerData = JSON.parse(window.sessionStorage.jwtNewSmile)
+
+            const fullStartDate = changeDateTime(fullDayDateVal, newStartVal)
+            const fullEndDate = changeDateTime(fullDayDateVal, newEndVal)
+
+            const eventObjData: any = {
+                title: newTitleVal,
+                start: fullStartDate,
+                end: fullEndDate,
+                description: newDescVal,
+                from: workerData.uuID,
+                fromName: workerData.username,
+                color: workerData.userEventColor,
+                patientName: `${patientData.name} ${patientData.surname}`,
+                bill: newBillVal,
+                billType: newCurrencyVal,
+                patient: patientData.uuID,
+                patientPhone: patientData.phone
+            }
+
+            const NewEvent: any = await HttpRequest.post(`/createEvent`, eventObjData)
+
+            if(NewEvent.error){
+
+                console.log(NewEvent.error)
+                alertError(NewEvent.error)
+                setIsFormOpen(false)
+                return
+            }
+
+            alertSuccess("Event Created Successfully")
+
+            await fetchNewPage();
+
+
+            titleRef.current.value = '';
+            descRef.current.value = '';
+            billRef.current.value = '';
+            currencyRef.current.value = '';
+
+            setIsFormOpen(false)
+
+        } catch (e) {
+            console.log(e)
+            alertError("An Error Occurred")
+        }
+
+
+    }
+
 
     return (
         <>
             {/*<HeaderComp />*/}
             <HeaderVertComp />
+            {
+                isFormOpen &&
+                <div className="w-full h-full z-10 bg-gray-400 absolute opacity-[90%]"></div>
+            }
+            {
+                isFormOpen &&
+                <section className={`w-[510px] h-[500px] flex flex items-center justify-between m-4 rounded-2xl z-20 absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]`} >
+                    <div className="bg-white w-full h-full rounded-2xl">
+                        <PatientNewEventForm dates={false} FormTitle={"New Event"} cancelEvent={cancelEvent} submitForm={postNewEvent} />
+                    </div>
+                </section>
+            }
 
             {/*<ToastContainerDefault />*/}
-            <main className="flex flex-col gridMain items-center gap-8 py-12">
+            <main className={`flex flex-col gridMain items-center gap-8 py-12 ${isFormOpen && "overflow-hidden"}`}>
                 <EditPatientForm patientData={patientData} medData={MedHisData} />
-                <PatientHistory patientHistoryData={patientHistory} totalEvents={hisData.total} fetchNewPage={fetchNewPage} patientUUID={data.uuID} />
+                <PatientHistory setFormOn={() => {
+                    window.scrollTo(0, 0);
+                    setIsFormOpen(true);
+                }} patientHistoryData={patientHistory} totalEvents={hisData.total} fetchNewPage={fetchNewPage} patientUUID={data.uuID} />
             </main>
         </>
     )
