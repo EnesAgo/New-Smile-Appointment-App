@@ -25,7 +25,7 @@ export async function getServerSideProps({ params }: any){
         };
     }
 }
-const PrintDocument = ({ data }: any ) => {
+const PrintDocumentEng = ({ data }: any ) => {
     useEffect(() => {
         document.body.classList.remove("bg-background-img-one");
         document.body.classList.remove("bg-background-img-two");
@@ -50,20 +50,20 @@ const PrintDocument = ({ data }: any ) => {
             <div className="w-full h-full flex flex-col gap-10">
                 <h1 className="text-center text-dark text-4xl">New Smile</h1>
                 <div className="flex flex-col gap-12">
-                    <h1 className="font-semibold text-xl">Служби:</h1>
+                    {/*<h1 className="font-semibold text-xl">Служби:</h1>*/}
                     <div className="w-full flex justify-center">
                         <table className="table table-auto w-[80%] border-collapse border border-slate-500">
                             <thead className="w-full">
                             <tr className="w-full child:border child:border-slate-500 child:p-2">
-                                <th className="text-left">Шифра</th>
-                                <th className="text-left">Наслов</th>
-                                <th className="text-left">Почетен датум</th>
-                                <th className="text-left">крајна дата</th>
-                                <th className="text-left">опис</th>
+                                <th className="text-left">ID</th>
+                                <th className="text-left">title</th>
+                                <th className="text-left">start</th>
+                                <th className="text-left">end</th>
+                                <th className="text-left">description</th>
                                 {/*<th className="text-left">bill</th>*/}
                                 {/*<th className="text-left">currency</th>*/}
                                 {/*<th className="text-left">payed</th>*/}
-                                <th className="text-left">ДОКТОР</th>
+                                <th className="text-left">doctor</th>
                             </tr>
                             </thead>
                             <tbody className="w-full">
@@ -82,18 +82,19 @@ const PrintDocument = ({ data }: any ) => {
                         </table>
                     </div>
 
-                    <h2 className="font-medium text-lg mt-8">Се согласувам дека <u>е направена</u> интервенција на <u>_____________</u>, износот на интервенција е <u>_____________</u> и дека ќе биде платен до рок од <u>_____________</u></h2>
+                    <h2 className="font-medium text-lg mt-8">I agree that <u>I Have</u> done intervention in <u>_____________</u>
+                    and the bill of the intervention <br/> <br/> is <u>_____________</u> and that I will pay until <u>_____________</u></h2>
 
                 </div>
 
             </div>
             <div className="static bottom-5 w-full flex justify-between">
                 <div className="flex flex-col h-[100px] w-[350px] justify-between items-center">
-                    <h1 className="font-semibold text-xl text-center">Потпис на Директорот <br/> на New Smile</h1>
+                    <h1 className="font-semibold text-xl text-center">Signature of the doctor</h1>
                     <span className="w-[80%] border border-b-dark"></span>
                 </div>
                 <div className="flex flex-col h-[100px] w-[350px] justify-between items-center">
-                    <h1 className="font-semibold text-xl text-center">Потпис на клиент</h1>
+                    <h1 className="font-semibold text-xl text-center">Signature of the client</h1>
                     <span className="w-[80%] border border-b-dark"></span>
                 </div>
             </div>
@@ -101,4 +102,4 @@ const PrintDocument = ({ data }: any ) => {
     );
 };
 
-export default PrintDocument;
+export default PrintDocumentEng;

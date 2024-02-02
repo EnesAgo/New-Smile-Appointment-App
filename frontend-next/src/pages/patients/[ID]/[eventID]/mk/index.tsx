@@ -89,7 +89,7 @@ const PrintDocument = ({ data }: any ) => {
             </div>
             <div className="static bottom-5 w-full flex justify-between">
                 <div className="flex flex-col h-[100px] w-[350px] justify-between items-center">
-                    <h1 className="font-semibold text-xl text-center">Потпис на Директорот <br/> на New Smile</h1>
+                    <h1 className="font-semibold text-xl text-center">Потпис на Директорот</h1>
                     <span className="w-[80%] border border-b-dark"></span>
                 </div>
                 <div className="flex flex-col h-[100px] w-[350px] justify-between items-center">

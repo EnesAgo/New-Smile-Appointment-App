@@ -19,9 +19,9 @@ export default function PatientList({data, head, searchInpRef, searchInpTypeRef,
 
 
     return (
-        <section className="flex flex-col items-center justify-center w-[70%] min-h-32 bg-white rounded-[30px] pt-10">
+        <section className="flex flex-col items-center justify-center min-w-[650px] w-[70%] min-h-32 bg-white rounded-[30px] pt-10">
 
-            <div className="w-full min-h-28 flex items-center justify-between px-12">
+            <div className="w-full min-h-28 flex items-center justify-between px-12 flex-wrap">
 
                 <h1 className="font-bold text-3xl font-sans">All Customers</h1>
 

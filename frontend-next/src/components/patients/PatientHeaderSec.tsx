@@ -14,7 +14,7 @@ export default function PatientHeaderSec({activePatients, totalPatients, inactiv
 
 
     return (
-        <section className="flex items-center justify-center w-[60%] h-32 bg-white rounded-[30px]">
+        <section className="flex items-center justify-center min-w-[650px] w-[60%] h-32 bg-white rounded-[30px]">
             <div className="flex gap-2 h-20 border-r-[1px] border-r-alto px-10">
                 <img src="/assets/imgs/patients/singlePatientImg.png" alt="singlePatient" className="h-20 w-20 rounded-full"/>
                 <div className="h-full flex flex-col justify-between">

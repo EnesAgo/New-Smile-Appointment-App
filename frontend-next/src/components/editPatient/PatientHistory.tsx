@@ -10,8 +10,6 @@ export default function PatientHistory(Props: any) {
     const [historyDataShow, setHistoryDataShow] = useState<any>([])
     const [totalEvents, setTotalEvents] = useState(0)
 
-    const [isPrintOpen, setIsPrintOpen] = useState(false)
-
     const router = useRouter()
 
     const iconPrefix = '/assets/imgs/icons'
@@ -29,7 +27,7 @@ export default function PatientHistory(Props: any) {
         end: "test",
         description: "test",
         from: "test",
-        patient: "test",
+        // patient: "test",
         bill: "test",
         color: "test",
     }
@@ -58,8 +56,7 @@ export default function PatientHistory(Props: any) {
     }, [Props])
 
     return (
-        <>
-            <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
+        <div className="flex flex-col items-center w-[80%] min-h-96 bg-white rounded-3xl py-5">
 
                     <div className="w-full min-h-28 flex items-center justify-center px-12">
 
@@ -91,8 +88,8 @@ export default function PatientHistory(Props: any) {
                                         {historyDataShow && historyDataShow.map((e:any) =>
 
                                             <tr key={Math.random()*1000} className="cursor-pointer"
-                                                onClick={() => router.push(`/patients/${Props.patientUUID}/${e.uuID}`)}
-                                                // onClick={() => setIsPrintOpen(true)}
+                                                // onClick={() => router.push(`/patients/${Props.patientUUID}/${e.uuID}`)}
+                                                onClick={() => {Props.setIsPrintOpen(e.uuID)}}
                                             >
                                                 {head && head.map((tdInd: any) => (
                                                     tdInd!=='color' &&
@@ -144,6 +141,5 @@ export default function PatientHistory(Props: any) {
                     </div>
 
                 </div>
-        </>
     )
 }

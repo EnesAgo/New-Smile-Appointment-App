@@ -173,7 +173,7 @@ export default function NewPatientForm() {
                         <label>
                             <p className="!text-[#666] pl-[1px] py-2 cursor-pointer
                  font-Poppints">E-mail</p>
-                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"E-mail"} inpType={"email"} inpRef={emailRef} hasPic={false} />
+                            <InpLg className={"border-2 border-[rgba(102, 102, 102, 0.35)] font-Poppins !placeholder-[rgba(102, 102, 102, 0.60)] !w-72 !h-12 !pl-3 rounded-xl"} placeholderVal={"E-mail"} inpType={"text"} inpRef={emailRef} hasPic={false} isNotRequired={true} />
                         </label>
                     </section>
 

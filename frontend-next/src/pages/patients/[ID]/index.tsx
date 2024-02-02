@@ -56,6 +56,9 @@ export default function Patient({ data, medData, hisData, error }: any) {
         return newDate;
     }
 
+    const [isPrintOpen, setIsPrintOpen] = useState(false)
+    const [printUUID, setPrintUUID] = useState('')
+
     const [patientData, setPatientData] = useState<any>({
         name: "",
         surname: "",
@@ -143,8 +146,17 @@ export default function Patient({ data, medData, hisData, error }: any) {
 
     }
 
+    function setIsPrintOpenFn(printUUIDProp: any){
+        setIsPrintOpen(true)
+        setIsFormOpen(false)
+        setPrintUUID(printUUIDProp)
+        window.scrollTo(0, 0);
+
+    }
+
     async function cancelEvent(){
         setIsFormOpen(false)
+        setIsPrintOpen(false)
     }
 
     async function postNewEvent(startRef:any, endRef:any, titleRef:any, descRef:any, billRef:any, currencyRef:any, fullDayDateRef:any){
@@ -223,10 +235,33 @@ export default function Patient({ data, medData, hisData, error }: any) {
                 <div className="w-full h-full z-10 bg-gray-400 absolute opacity-[90%]"></div>
             }
             {
+                isPrintOpen &&
+                <div className="w-full h-full z-10 bg-gray-400 absolute opacity-[90%]"></div>
+            }
+            {
                 isFormOpen &&
                 <section className={`w-[510px] h-[500px] flex flex items-center justify-between m-4 rounded-2xl z-20 absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]`} >
                     <div className="bg-white w-full h-full rounded-2xl">
                         <PatientNewEventForm dates={false} FormTitle={"New Event"} cancelEvent={cancelEvent} submitForm={postNewEvent} />
+                    </div>
+                </section>
+            }
+            {
+                isPrintOpen &&
+                <section className={`w-[450px] h-[80px] flex flex items-center justify-between m-4 rounded-2xl z-20 absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]`} >
+                    <div className="bg-white w-full h-full rounded-2xl flex items-center justify-evenly">
+                        <button onClick={() => router.push(`/patients/${data.uuID}/${printUUID}/eng`)} className={`flex items-center justify-center bg-[#4200FF] hover:bg-[#3d00e5] h-10 w-20 rounded-xl`}>
+                            <h5 className="text-white text-base">English</h5>
+                        </button>
+                        <button onClick={() => router.push(`/patients/${data.uuID}/${printUUID}/mk`)} className={`flex items-center justify-center bg-[#4200FF] hover:bg-[#3d00e5] h-10 w-24 rounded-xl`}>
+                            <h5 className="text-white text-sm">Македонски</h5>
+                        </button>
+                        <button onClick={() => router.push(`/patients/${data.uuID}/${printUUID}/alb`)} className={`flex items-center justify-center bg-[#4200FF] hover:bg-[#3d00e5] h-10 w-20 rounded-xl`}>
+                            <h5 className="text-white text-base">Shqipe</h5>
+                        </button>
+                        <button onClick={cancelEvent} className={`flex items-center justify-center bg-[#ff3a3a] hover:bg-[#fc0505] h-10 w-20 rounded-xl`}>
+                            <h5 className="text-white text-base">Cancel</h5>
+                        </button>
                     </div>
                 </section>
             }
@@ -236,8 +271,9 @@ export default function Patient({ data, medData, hisData, error }: any) {
                 <EditPatientForm patientData={patientData} medData={MedHisData} />
                 <PatientHistory setFormOn={() => {
                     window.scrollTo(0, 0);
+                    setIsPrintOpen(false)
                     setIsFormOpen(true);
-                }} patientHistoryData={patientHistory} totalEvents={hisData.total} fetchNewPage={fetchNewPage} patientUUID={data.uuID} />
+                }} patientHistoryData={patientHistory} totalEvents={hisData.total} fetchNewPage={fetchNewPage} setIsPrintOpen={setIsPrintOpenFn} patientUUID={data.uuID} />
             </main>
         </>
     )
