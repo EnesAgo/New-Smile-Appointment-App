@@ -1,8 +1,10 @@
 import React, {useCallback, useState} from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
+import 'moment/locale/en-gb'
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
+// import "globalize/lib/cultures/globalize.culture.en-GB"
 
 
 const localizer = momentLocalizer(moment)
@@ -50,16 +52,20 @@ export default function MyCalendar({calEvents, handleNavigate, onSelectSlot, onS
                 onSelectSlot={onSelectSlot}
                 onSelectEvent={onSelectEvent}
 
+                min={new Date(0, 0, 0, 8, 0, 0)}
+                max={new Date(0, 0, 0, 21, 0, 0)}
 
                 views={{
                     month: true,
                     week: true,
+                    day: true,
                     agenda: true
                 }}
-                defaultView={"week"}
+                defaultView={"day"}
+                culture={"en-GB"}
                 onNavigate={handleNavigate}
                 scrollToTime={scrollToTime}
-                style={{ height: 500, width: "100%" }}
+                style={{ height: "95% ", width: "100%" }}
             />
         </div>
     )

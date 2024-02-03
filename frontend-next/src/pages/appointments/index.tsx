@@ -437,7 +437,7 @@ export default function Appointments({ data, error }: any) {
                             {
                                 isNewEventForm ?
                                     <EventForm dates={eventFormDates} FormTitle={"New Event"} cancelEvent={cancelEvent} submitForm={postNewEvent} /> :
-                                    <EventForm dates={eventFormDates} FormTitle={"Edit Event"} cancelEvent={cancelEvent} submitForm={updateEvent} deleteEvent={deleteEvent} defaultInpVals={defaultEditFormData} isEdit={true} />
+                                    <EventForm dates={eventFormDates} FormTitle={"Edit Event"} cancelEvent={cancelEvent} submitForm={updateEvent} deleteEvent={deleteEvent} selectedEvent={selectedEvent} defaultInpVals={defaultEditFormData} isEdit={true} />
 
                             }
                         </div>
